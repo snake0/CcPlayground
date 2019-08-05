@@ -26,6 +26,7 @@ struct TreeNode {
 
 class Solution {
 public:
+    /*
     // 142
     ListNode *detectCycle(ListNode *head) {
         ListNode *fast = head, *slow = head;
@@ -222,6 +223,7 @@ public:
         }
         return false;
     }
+     */
 
     // 29
     int divide(int dividend, int divisor) {
@@ -238,4 +240,5 @@ public:
 
 int main() {
     Solution S;
+    cout << S.divide(10, 3);
 }
