@@ -91,7 +91,6 @@ public:
         return list[size - start];
     }
 
-private:
     // 82
     bool containDuplicates(ListNode *node, ListNode **store) {
         if (!(node && node->next))
@@ -109,7 +108,6 @@ private:
         return true;
     }
 
-public:
     ListNode *deleteDuplicates(ListNode *head) {
         if (!head)
             return head;
@@ -139,7 +137,6 @@ public:
         return lists[0];
     }
 
-private:
     void merge(vector<ListNode *> &lists, int left, int right) {
         if (left == right)
             return;
@@ -168,7 +165,6 @@ private:
         return result;
     }
 
-public:
     // 19
     ListNode *removeNthFromEnd(ListNode *head, int n) {
         ListNode *t = head, *h = head, *bh = nullptr;
@@ -226,6 +222,7 @@ public:
         }
         return false;
     }
+
     // 29
     int divide(int dividend, int divisor) {
 
