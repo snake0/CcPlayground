@@ -8,12 +8,15 @@ public:
     int divide(int dividend, int divisor) {
 
     }
+    bool containsDuplicate(vector<int>& nums) {
+
+    }
 };
 
 int main() {
     Solution S;
 
     int p = (1 << 31);
-//    cout << S.divide(10, 1);
+
     cout << abs(p);
 }
