@@ -226,7 +226,6 @@ public:
         }
         return false;
     }
-
     // 29
     int divide(int dividend, int divisor) {
 
@@ -242,6 +241,4 @@ public:
 
 int main() {
     Solution S;
-
-    cout << S.divide(10, 3);
 }
