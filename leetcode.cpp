@@ -227,18 +227,59 @@ public:
 
     // 29
     int divide(int dividend, int divisor) {
+        auto m = (long long) dividend, n = (long long) divisor;
 
+        bool a = true, b = true;
+        if (dividend < 0) {
+            m = -m;
+            a = false;
+        }
+        if (divisor < 0) {
+            n = -n;
+            b = false;
+        }
+
+        long long ns, p, res = 0;
+        while (m >= n) {
+            ns = n;
+            p = 1;
+            while (ns <= m) {
+                p <<= 1;
+                ns <<= 1;
+            }
+            res += p >> 1;
+            m -= ns >> 1;
+        }
+        res = a ^ b ? -res : res;
+        return res > INT_MAX ? INT_MAX : (int) res;
     }
 
     // 287
     int findDuplicate(vector<int> &nums) {
         if (nums.size() > 1) {
-
+            int slow = nums[0], fast = nums[nums[0]];
+            while (slow != fast) {
+                slow = nums[slow];
+                fast = nums[nums[fast]];
+            }
+            fast = 0;
+            while (slow != fast) {
+                slow = nums[slow];
+                fast = nums[fast];
+            }
+            return slow;
         }
+        return -1;
+    }
+
+    // 3
+    int lengthOfLongestSubstring(string s) {
+
     }
 };
 
 int main() {
     Solution S;
-    cout << S.divide(10, 3);
+    int s = abs(INT_MIN);
+    cout << S.divide(10, -3);
 }
