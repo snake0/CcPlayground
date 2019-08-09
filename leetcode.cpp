@@ -20,335 +20,394 @@
 using namespace std;
 
 struct ListNode {
-    int val;
-    ListNode* next;
-    ListNode(int x)
-        : val(x)
-        , next(nullptr)
-    {
-    }
+  int val;
+  ListNode *next;
+  ListNode(int x) : val(x), next(nullptr) {}
 };
 
+ListNode *newListNode(int val, ListNode *l) {
+  ListNode *head = new ListNode(val);
+  head->next = l;
+  return head;
+}
+
+void deleteListNode(ListNode *l) {
+  ListNode *ptr = l, *tmp;
+  while (ptr) {
+    tmp = ptr;
+    ptr = ptr->next;
+    delete tmp;
+  }
+}
+
+void coutListNode(ListNode *l) {
+  while (l) {
+    cout << l->val << "->";
+    l = l->next;
+  }
+  cout << "phi" << endl;
+}
+
 struct TreeNode {
-    int val;
-    TreeNode* left;
-    TreeNode* right;
-    TreeNode(int x)
-        : val(x)
-        , left(nullptr)
-        , right(nullptr)
-    {
-    }
+  int val;
+  TreeNode *left;
+  TreeNode *right;
+  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
+
+TreeNode *newTreeNode(int val, TreeNode *left, TreeNode *right) {
+  TreeNode *root = new TreeNode(val);
+  root->left = left;
+  root->right = right;
+  return root;
+}
+
+void coutTreeNode(TreeNode *root) {
+  queue<pair<TreeNode *, int>> s;
+  s.push(make_pair(root, 0));
+  int old_level = ~(1 << 31);
+
+  TreeNode *top;
+  while (!s.empty()) {
+    auto back = s.front();
+    int cur_level = back.second;
+    top = back.first;
+    s.pop();
+
+    if (cur_level > old_level)
+      cout << endl;
+    if (top) {
+      cout << top->val << " ";
+      s.emplace(make_pair(top->left, cur_level + 1));
+      s.emplace(make_pair(top->right, cur_level + 1));
+    } else
+      cout << "ph ";
+
+    old_level = cur_level;
+  }
+}
 
 class Solution {
 public:
-    // 142
-    ListNode* detectCycle(ListNode* head)
-    {
-        ListNode *fast = head, *slow = head;
-        bool flag = false;
+  // 142
+  ListNode *detectCycle(ListNode *head) {
+    ListNode *fast = head, *slow = head;
+    bool flag = false;
 
-        while (fast && fast->next) {
-            slow = slow->next;
-            fast = fast->next->next;
-            if (slow == fast) {
-                flag = true;
-                break;
-            }
-        }
-        if (flag) {
-            slow = head;
-            while (slow != fast) {
-                slow = slow->next;
-                fast = fast->next;
-            }
-            return slow;
-        } else
-            return nullptr;
+    while (fast && fast->next) {
+      slow = slow->next;
+      fast = fast->next->next;
+      if (slow == fast) {
+        flag = true;
+        break;
+      }
+    }
+    if (flag) {
+      slow = head;
+      while (slow != fast) {
+        slow = slow->next;
+        fast = fast->next;
+      }
+      return slow;
+    } else
+      return nullptr;
+  }
+
+  // 102
+  vector<vector<int>> levelOrder(TreeNode *root) {
+    vector<vector<int>> res;
+    if (root == nullptr)
+      return res;
+
+    queue<TreeNode *> q;
+    q.push(root);
+
+    while (!q.empty()) {
+      vector<int> oneLevel;
+      for (int i = q.size(); i > 0; --i) {
+        TreeNode *t = q.front();
+        q.pop();
+
+        oneLevel.emplace_back(t->val);
+        if (t->left != nullptr)
+          q.push(t->left);
+        if (t->right != nullptr)
+          q.push(t->right);
+      }
+
+      res.emplace_back(oneLevel);
     }
 
-    // 102
-    vector<vector<int>> levelOrder(TreeNode* root)
-    {
-        vector<vector<int>> res;
-        if (root == nullptr)
-            return res;
+    return res;
+  }
 
-        queue<TreeNode*> q;
-        q.push(root);
+  // 61
+  ListNode *rotateRight(ListNode *head, int k) {
+    if (!head || !head->next || !k)
+      return head;
+    vector<ListNode *> list;
+    ListNode *h = head;
+    for (; h; h = h->next)
+      list.push_back(h);
 
-        while (!q.empty()) {
-            vector<int> oneLevel;
-            for (int i = q.size(); i > 0; --i) {
-                TreeNode* t = q.front();
-                q.pop();
+    int size = list.size(), start = k % size;
+    if (start == 0)
+      return head;
+    list[size - 1]->next = head;
+    list[size - 1 - start]->next = nullptr;
+    return list[size - start];
+  }
 
-                oneLevel.emplace_back(t->val);
-                if (t->left != nullptr)
-                    q.push(t->left);
-                if (t->right != nullptr)
-                    q.push(t->right);
-            }
+  // 82
+  bool containDuplicates(ListNode *node, ListNode **store) {
+    if (!(node && node->next))
+      return false;
+    int val = node->val;
 
-            res.emplace_back(oneLevel);
-        }
+    ListNode *next = node->next;
+    while (next && next->val == val)
+      next = next->next;
 
-        return res;
+    if (next == node->next)
+      return false;
+    if (store)
+      *store = next;
+    return true;
+  }
+
+  ListNode *deleteDuplicates(ListNode *head) {
+    if (!head)
+      return head;
+    ListNode *p;
+    ListNode *h = head, *bh = nullptr;
+    while (h) {
+      if (containDuplicates(h, &p)) {
+        if (bh)
+          bh->next = p;
+        else
+          head = p;
+        h = p;
+        continue;
+      }
+      bh = h;
+      h = h->next;
+    }
+    return head;
+  }
+
+  // 23
+  ListNode *mergeKLists(vector<ListNode *> &lists) {
+    int n = lists.size();
+    if (n == 0)
+      return nullptr;
+    merge(lists, 0, n - 1);
+    return lists[0];
+  }
+
+  void merge(vector<ListNode *> &lists, int left, int right) {
+    if (left == right)
+      return;
+    int mid = (left + right) / 2;
+    merge(lists, left, mid);
+    merge(lists, mid + 1, right);
+    ListNode *mergeList = mergeTwoList(lists[left], lists[mid + 1]);
+    lists[left] = mergeList;
+  }
+
+  ListNode *mergeTwoList(ListNode *list1, ListNode *list2) {
+    if (list1 == nullptr)
+      return list2;
+    else if (list2 == nullptr)
+      return list1;
+    ListNode *result;
+
+    if (list1->val <= list2->val) {
+      result = list1;
+      result->next = mergeTwoList(list1->next, list2);
+    } else {
+      result = list2;
+      result->next = mergeTwoList(list2->next, list1);
     }
 
-    // 61
-    ListNode* rotateRight(ListNode* head, int k)
-    {
-        if (!head || !head->next || !k)
-            return head;
-        vector<ListNode*> list;
-        ListNode* h = head;
-        for (; h; h = h->next)
-            list.push_back(h);
+    return result;
+  }
 
-        int size = list.size(), start = k % size;
-        if (start == 0)
-            return head;
-        list[size - 1]->next = head;
-        list[size - 1 - start]->next = nullptr;
-        return list[size - start];
+  // 19
+  ListNode *removeNthFromEnd(ListNode *head, int n) {
+    ListNode *t = head, *h = head, *bh = nullptr;
+    int gap = n - 1;
+    for (int i = 0; i < gap; ++i) {
+      t = t->next;
     }
+    while (t->next) {
+      t = t->next;
+      bh = h;
+      h = h->next;
+    }
+    if (t == head)
+      return nullptr;
+    else if (bh == nullptr)
+      return head->next;
+    else {
+      bh->next = h->next;
+      return head;
+    }
+  }
 
-    // 82
-    bool containDuplicates(ListNode* node, ListNode** store)
-    {
-        if (!(node && node->next))
-            return false;
-        int val = node->val;
+  // 179
+  string largestNumber(vector<int> &nums) {
+    string res;
+    int size = nums.size();
 
-        ListNode* next = node->next;
-        while (next && next->val == val)
-            next = next->next;
+    vector<string> strs = vector<string>(size);
+    for (int i = 0; i < size; ++i)
+      strs[i] = to_string(nums[i]);
 
-        if (next == node->next)
-            return false;
-        if (store)
-            *store = next;
+    sort(strs.begin(), strs.end(),
+         [](string a, string b) { return a + b > b + a; });
+
+    for (int i = 0; i < size; ++i)
+      res += strs[i];
+    return res[0] == '0' ? "0" : res;
+  }
+
+  // 240
+  bool searchMatrix(vector<vector<int>> &matrix, int target) {
+    if (matrix.empty() || matrix[0].empty())
+      return false;
+
+    int row = matrix.size() - 1, col = matrix[0].size() - 1;
+    int i = row, j = 0;
+    while (i >= 0 && j <= col) {
+      int t = matrix[i][j];
+      if (t > target) {
+        --i;
+      } else if (t < target) {
+        ++j;
+      } else
         return true;
     }
+    return false;
+  }
 
-    ListNode* deleteDuplicates(ListNode* head)
-    {
-        if (!head)
-            return head;
-        ListNode* p;
-        ListNode *h = head, *bh = nullptr;
-        while (h) {
-            if (containDuplicates(h, &p)) {
-                if (bh)
-                    bh->next = p;
-                else
-                    head = p;
-                h = p;
-                continue;
-            }
-            bh = h;
-            h = h->next;
-        }
-        return head;
+  // 29
+  int divide(int dividend, int divisor) {
+    auto m = (long long)dividend, n = (long long)divisor;
+
+    bool a = true, b = true;
+    if (dividend < 0) {
+      m = -m;
+      a = false;
+    }
+    if (divisor < 0) {
+      n = -n;
+      b = false;
     }
 
-    // 23
-    ListNode* mergeKLists(vector<ListNode*>& lists)
-    {
-        int n = lists.size();
-        if (n == 0)
-            return nullptr;
-        merge(lists, 0, n - 1);
-        return lists[0];
+    long long ns, p, res = 0;
+    while (m >= n) {
+      ns = n;
+      p = 1;
+      while (ns <= m) {
+        p <<= 1;
+        ns <<= 1;
+      }
+      res += p >> 1;
+      m -= ns >> 1;
     }
+    res = a ^ b ? -res : res;
+    return res > INT_MAX ? INT_MAX : (int)res;
+  }
 
-    void merge(vector<ListNode*>& lists, int left, int right)
-    {
-        if (left == right)
-            return;
-        int mid = (left + right) / 2;
-        merge(lists, left, mid);
-        merge(lists, mid + 1, right);
-        ListNode* mergeList = mergeTwoList(lists[left], lists[mid + 1]);
-        lists[left] = mergeList;
+  // 287
+  int findDuplicate(vector<int> &nums) {
+    if (nums.size() > 1) {
+      int slow = nums[0], fast = nums[nums[0]];
+      while (slow != fast) {
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+      }
+      fast = 0;
+      while (slow != fast) {
+        slow = nums[slow];
+        fast = nums[fast];
+      }
+      return slow;
     }
+    return -1;
+  }
 
-    ListNode* mergeTwoList(ListNode* list1, ListNode* list2)
-    {
-        if (list1 == nullptr)
-            return list2;
-        else if (list2 == nullptr)
-            return list1;
-        ListNode* result;
+  // 3
+  int lengthOfLongestSubstring(string s) { return 1; }
 
-        if (list1->val <= list2->val) {
-            result = list1;
-            result->next = mergeTwoList(list1->next, list2);
-        } else {
-            result = list2;
-            result->next = mergeTwoList(list2->next, list1);
+  // 144
+  vector<int> preorderTraversal(TreeNode *root) {
+    vector<int> ret = vector<int>();
+    return ret;
+  }
+
+  // ?
+  vector<vector<int>> generate(int numRows) {
+    vector<vector<int>> ans(numRows);
+    if (numRows == 0)
+      return ans;
+
+    ans[0] = vector<int>{1};
+    if (numRows > 1) {
+      for (int i = 0; i < numRows - 1; ++i) {
+        vector<int> tmp(i + 2);
+        tmp[0] = 1;
+        tmp[i + 1] = 1;
+        for (int j = 1; j < ans[i].size(); ++j) {
+          tmp[j] = ans[i][j] + ans[i][j - 1];
         }
-
-        return result;
+        ans[i + 1] = tmp;
+      }
     }
-
-    // 19
-    ListNode* removeNthFromEnd(ListNode* head, int n)
-    {
-        ListNode *t = head, *h = head, *bh = nullptr;
-        int gap = n - 1;
-        for (int i = 0; i < gap; ++i) {
-            t = t->next;
-        }
-        while (t->next) {
-            t = t->next;
-            bh = h;
-            h = h->next;
-        }
-        if (t == head)
-            return nullptr;
-        else if (bh == nullptr)
-            return head->next;
-        else {
-            bh->next = h->next;
-            return head;
-        }
+    return ans;
+  }
+  vector<int> getRow(int rowIndex) {
+    vector<int> res(rowIndex, 1), tmp = res;
+    for (int i = 1; i < rowIndex; ++i) {
+      for (int j = 1; j < i; ++j) {
+        tmp[j] = res[j - 1] + res[j];
+      }
+      res = tmp;
     }
+    return res;
+  }
 
-    // 179
-    string largestNumber(vector<int>& nums)
-    {
-        string res;
-        int size = nums.size();
-
-        vector<string> strs = vector<string>(size);
-        for (int i = 0; i < size; ++i)
-            strs[i] = to_string(nums[i]);
-
-        sort(strs.begin(), strs.end(), [](string a, string b) {
-            return a + b > b + a;
-        });
-
-        for (int i = 0; i < size; ++i)
-            res += strs[i];
-        return res[0] == '0' ? "0" : res;
+  ListNode *reverseList(ListNode *head) {
+    if (!(head && head->next))
+      return head;
+    ListNode *h = head, *bh = nullptr;
+    while (h) {
+      ListNode *ah = h->next;
+      h->next = bh;
+      bh = h;
+      h = ah;
     }
+    return bh;
+  }
 
-    // 240
-    bool searchMatrix(vector<vector<int>>& matrix, int target)
-    {
-        if (matrix.empty() || matrix[0].empty())
-            return false;
-
-        int row = matrix.size() - 1, col = matrix[0].size() - 1;
-        int i = row, j = 0;
-        while (i >= 0 && j <= col) {
-            int t = matrix[i][j];
-            if (t > target) {
-                --i;
-            } else if (t < target) {
-                ++j;
-            } else
-                return true;
-        }
-        return false;
-    }
-
-    // 29
-    int divide(int dividend, int divisor)
-    {
-        auto m = (long long)dividend, n = (long long)divisor;
-
-        bool a = true, b = true;
-        if (dividend < 0) {
-            m = -m;
-            a = false;
-        }
-        if (divisor < 0) {
-            n = -n;
-            b = false;
-        }
-
-        long long ns, p, res = 0;
-        while (m >= n) {
-            ns = n;
-            p = 1;
-            while (ns <= m) {
-                p <<= 1;
-                ns <<= 1;
-            }
-            res += p >> 1;
-            m -= ns >> 1;
-        }
-        res = a ^ b ? -res : res;
-        return res > INT_MAX ? INT_MAX : (int)res;
-    }
-
-    // 287
-    int findDuplicate(vector<int>& nums)
-    {
-        if (nums.size() > 1) {
-            int slow = nums[0], fast = nums[nums[0]];
-            while (slow != fast) {
-                slow = nums[slow];
-                fast = nums[nums[fast]];
-            }
-            fast = 0;
-            while (slow != fast) {
-                slow = nums[slow];
-                fast = nums[fast];
-            }
-            return slow;
-        }
-        return -1;
-    }
-
-    // 3
-    int lengthOfLongestSubstring(string s) { return 1; }
-
-    // 144
-    vector<int> preorderTraversal(TreeNode* root)
-    {
-        vector<int> ret = vector<int>();
-        return ret;
-    }
-
-    // ?
-    vector<vector<int>> generate(int numRows)
-    {
-        vector<vector<int>> ans(numRows);
-        if (numRows == 0)
-            return ans;
-
-        ans[0] = vector<int>{ 1 };
-        if (numRows > 1) {
-            for (int i = 0; i < numRows - 1; ++i) {
-                vector<int> tmp(i + 2);
-                tmp[0] = 1;
-                tmp[i + 1] = 1;
-                for (int j = 1; j < ans[i].size(); ++j) {
-                    tmp[j] = ans[i][j] + ans[i][j - 1];
-                }
-                ans[i + 1] = tmp;
-            }
-        }
-        return ans;
-    }
+  ListNode *reverseListRecursive(ListNode *head) {
+    if (!(head && head->next))
+      return head;
+    ListNode *l = reverseListRecursive(head->next);
+    head->next->next = head;
+    head->next = nullptr;
+    return l;
+  }
 };
 
-void pr(const vector<int>& p)
-{
-    for (int i : p)
-        cout << i << " ";
-    cout << endl;
-}
+#define L newListNode
+#define T newTreeNode
 
-int main()
-{
-
-    function<int(int)> f = [](int m) { return m * m; };
-    Solution s;
-    // cout << f(13);
+int main() {
+  Solution s;
+  // ListNode *l = L(1, L(2, L(3, nullptr)));
+  TreeNode *t = T(1, T(2, T(4, 0, 0), 0), T(3, 0, 0));
+  coutTreeNode(T(1, 0, 0));
+  // coutListNode(s.reverseList(l));
+  // deleteListNode(l);
 }
