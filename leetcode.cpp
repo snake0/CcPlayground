@@ -17,7 +17,17 @@
 #include <unordered_set>
 #include <vector>
 
+// #define PRINT
+
 using namespace std;
+
+template <class T> void printI(T t) {
+  for (auto ptr = t.begin(); ptr < t.end(); ++ptr)
+    cout << *ptr << " ";
+  cout << endl;
+}
+
+enum ORDER { PRE, IN, POST };
 
 struct ListNode {
   int val;
@@ -62,10 +72,11 @@ TreeNode *newTreeNode(int val, TreeNode *left, TreeNode *right) {
   return root;
 }
 
-void coutTreeNode(TreeNode *root) {
+vector<int> bfs(TreeNode *root) {
   queue<pair<TreeNode *, int>> s;
   s.push(make_pair(root, 0));
   int old_level = ~(1 << 31);
+  vector<int> res(0);
 
   TreeNode *top;
   while (!s.empty()) {
@@ -75,16 +86,66 @@ void coutTreeNode(TreeNode *root) {
     s.pop();
 
     if (cur_level > old_level)
-      cout << endl;
+#ifdef PRINT
+      cout << endl
+#endif
+          ;
     if (top) {
+#ifdef PRINT
       cout << top->val << " ";
+#endif
+      res.push_back(top->val);
       s.emplace(make_pair(top->left, cur_level + 1));
       s.emplace(make_pair(top->right, cur_level + 1));
     } else
-      cout << "ph ";
-
+#ifdef PRINT
+      cout << "ph "
+#endif
+          ;
     old_level = cur_level;
   }
+  return res;
+}
+
+vector<int> dfs(TreeNode *root, ORDER order) {
+  assert(order >= PRE && order <= POST);
+
+  vector<int> path(0);
+  stack<pair<TreeNode *, bool>> s;
+  s.push(make_pair(root, false));
+
+  bool visited;
+  while (!s.empty()) {
+    root = s.top().first;
+    visited = s.top().second;
+    s.pop();
+    if (root == nullptr)
+      continue;
+    if (visited) {
+      path.push_back(root->val);
+    } else {
+      auto n = make_pair(root, true), l = make_pair(root->left, false);
+      auto r = make_pair(root->right, false);
+      switch (order) {
+      case PRE:
+        s.push(r);
+        s.push(l);
+        s.push(n);
+        break;
+      case IN:
+        s.push(r);
+        s.push(n);
+        s.push(l);
+        break;
+      case POST:
+        s.push(n);
+        s.push(r);
+        s.push(l);
+        break;
+      }
+    }
+  }
+  return path;
 }
 
 class Solution {
@@ -406,8 +467,7 @@ public:
 int main() {
   Solution s;
   // ListNode *l = L(1, L(2, L(3, nullptr)));
-  TreeNode *t = T(1, T(2, T(4, 0, 0), 0), T(3, 0, 0));
-  coutTreeNode(T(1, 0, 0));
+  TreeNode *t = T(1, T(2, 0, 0), T(3, 0, 0));
   // coutListNode(s.reverseList(l));
   // deleteListNode(l);
 }
