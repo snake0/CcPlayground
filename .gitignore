@@ -35,3 +35,5 @@
 cmake-build-debug/
 CMakeLists.txt
 edit
+.vscode/
+leetcode
