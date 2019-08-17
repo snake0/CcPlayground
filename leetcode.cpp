@@ -23,11 +23,11 @@
 
 using namespace std;
 
-template <typename Iter>
-void IterPrint(Iter begin, Iter end)
-{
-    while (begin != end)
-        cout << *begin++ << " ";
+template<typename collection>
+void IterPrint(collection c) {
+    auto b = c.begin(), e = c.end();
+    while (b != e)
+        cout << *b++ << " ";
     cout << endl;
 }
 
@@ -39,24 +39,18 @@ enum ORDER {
 
 struct ListNode {
     int val;
-    ListNode* next;
+    ListNode *next;
 
-    ListNode(int x)
-        : val(x)
-        , next(nullptr)
-    {
-    }
+    ListNode(int x) : val(x), next(nullptr) {}
 };
 
-ListNode* newListNode(int val, ListNode* l)
-{
-    ListNode* head = new ListNode(val);
+ListNode *newListNode(int val, ListNode *l) {
+    ListNode *head = new ListNode(val);
     head->next = l;
     return head;
 }
 
-void deleteListNode(ListNode* l)
-{
+void deleteListNode(ListNode *l) {
     ListNode *ptr = l, *tmp;
     while (ptr) {
         tmp = ptr;
@@ -65,8 +59,7 @@ void deleteListNode(ListNode* l)
     }
 }
 
-void coutListNode(ListNode* l)
-{
+void coutListNode(ListNode *l) {
     while (l) {
         cout << l->val << "->";
         l = l->next;
@@ -76,33 +69,30 @@ void coutListNode(ListNode* l)
 
 struct TreeNode {
     int val;
-    TreeNode* left;
-    TreeNode* right;
+    TreeNode *left;
+    TreeNode *right;
 
-    TreeNode(int x)
-        : val(x)
-        , left(nullptr)
-        , right(nullptr)
-    {
-    }
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
-TreeNode* newTreeNode(int val, TreeNode* left, TreeNode* right)
-{
-    TreeNode* root = new TreeNode(val);
+TreeNode *newTreeNode(int val, TreeNode *left, TreeNode *right) {
+    TreeNode *root = new TreeNode(val);
     root->left = left;
     root->right = right;
     return root;
 }
 
-vector<int> bfs(TreeNode* root)
-{
-    queue<pair<TreeNode*, int>> s;
+#define L newListNode
+#define T newTreeNode
+
+/*
+vector<int> bfs(TreeNode *root) {
+    queue<pair<TreeNode *, int>> s;
     s.push(make_pair(root, 0));
     int old_level = ~(1 << 31);
     vector<int> res(0);
 
-    TreeNode* top;
+    TreeNode *top;
     while (!s.empty()) {
         auto back = s.front();
         int cur_level = back.second;
@@ -131,12 +121,11 @@ vector<int> bfs(TreeNode* root)
     return res;
 }
 
-vector<int> dfs(TreeNode* root, ORDER order)
-{
+vector<int> dfs(TreeNode *root, ORDER order) {
     assert(order >= PRE && order <= POST);
 
     vector<int> path(0);
-    stack<pair<TreeNode*, bool>> s;
+    stack<pair<TreeNode *, bool>> s;
     s.push(make_pair(root, false));
 
     bool visited;
@@ -152,32 +141,32 @@ vector<int> dfs(TreeNode* root, ORDER order)
             auto n = make_pair(root, true), l = make_pair(root->left, false);
             auto r = make_pair(root->right, false);
             switch (order) {
-            case PRE:
-                s.push(r);
-                s.push(l);
-                s.push(n);
-                break;
-            case IN:
-                s.push(r);
-                s.push(n);
-                s.push(l);
-                break;
-            case POST:
-                s.push(n);
-                s.push(r);
-                s.push(l);
-                break;
+                case PRE:
+                    s.push(r);
+                    s.push(l);
+                    s.push(n);
+                    break;
+                case IN:
+                    s.push(r);
+                    s.push(n);
+                    s.push(l);
+                    break;
+                case POST:
+                    s.push(n);
+                    s.push(r);
+                    s.push(l);
+                    break;
             }
         }
     }
     return path;
 }
-
+*/
 class Solution {
 public:
     // 142
-    ListNode* detectCycle(ListNode* head)
-    {
+    /*
+    ListNode *detectCycle(ListNode *head) {
         ListNode *fast = head, *slow = head;
         bool flag = false;
 
@@ -201,19 +190,18 @@ public:
     }
 
     // 102
-    vector<vector<int>> levelOrder(TreeNode* root)
-    {
+    vector<vector<int>> levelOrder(TreeNode *root) {
         vector<vector<int>> res;
         if (root == nullptr)
             return res;
 
-        queue<TreeNode*> q;
+        queue<TreeNode *> q;
         q.push(root);
 
         while (!q.empty()) {
             vector<int> oneLevel;
             for (int i = q.size(); i > 0; --i) {
-                TreeNode* t = q.front();
+                TreeNode *t = q.front();
                 q.pop();
 
                 oneLevel.emplace_back(t->val);
@@ -230,12 +218,11 @@ public:
     }
 
     // 61
-    ListNode* rotateRight(ListNode* head, int k)
-    {
+    ListNode *rotateRight(ListNode *head, int k) {
         if (!head || !head->next || !k)
             return head;
-        vector<ListNode*> list;
-        ListNode* h = head;
+        vector<ListNode *> list;
+        ListNode *h = head;
         for (; h; h = h->next)
             list.push_back(h);
 
@@ -248,13 +235,12 @@ public:
     }
 
     // 82
-    bool containDuplicates(ListNode* node, ListNode** store)
-    {
+    bool containDuplicates(ListNode *node, ListNode **store) {
         if (!(node && node->next))
             return false;
         int val = node->val;
 
-        ListNode* next = node->next;
+        ListNode *next = node->next;
         while (next && next->val == val)
             next = next->next;
 
@@ -265,11 +251,10 @@ public:
         return true;
     }
 
-    ListNode* deleteDuplicates(ListNode* head)
-    {
+    ListNode *deleteDuplicates(ListNode *head) {
         if (!head)
             return head;
-        ListNode* p;
+        ListNode *p;
         ListNode *h = head, *bh = nullptr;
         while (h) {
             if (containDuplicates(h, &p)) {
@@ -287,8 +272,7 @@ public:
     }
 
     // 23
-    ListNode* mergeKLists(vector<ListNode*>& lists)
-    {
+    ListNode *mergeKLists(vector<ListNode *> &lists) {
         int n = lists.size();
         if (n == 0)
             return nullptr;
@@ -296,24 +280,22 @@ public:
         return lists[0];
     }
 
-    void merge(vector<ListNode*>& lists, int left, int right)
-    {
+    void merge(vector<ListNode *> &lists, int left, int right) {
         if (left == right)
             return;
         int mid = (left + right) / 2;
         merge(lists, left, mid);
         merge(lists, mid + 1, right);
-        ListNode* mergeList = mergeTwoList(lists[left], lists[mid + 1]);
+        ListNode *mergeList = mergeTwoList(lists[left], lists[mid + 1]);
         lists[left] = mergeList;
     }
 
-    ListNode* mergeTwoList(ListNode* list1, ListNode* list2)
-    {
+    ListNode *mergeTwoList(ListNode *list1, ListNode *list2) {
         if (list1 == nullptr)
             return list2;
         else if (list2 == nullptr)
             return list1;
-        ListNode* result;
+        ListNode *result;
 
         if (list1->val <= list2->val) {
             result = list1;
@@ -327,8 +309,7 @@ public:
     }
 
     // 19
-    ListNode* removeNthFromEnd(ListNode* head, int n)
-    {
+    ListNode *removeNthFromEnd(ListNode *head, int n) {
         ListNode *t = head, *h = head, *bh = nullptr;
         int gap = n - 1;
         for (int i = 0; i < gap; ++i) {
@@ -350,8 +331,7 @@ public:
     }
 
     // 179
-    string largestNumber(vector<int>& nums)
-    {
+    string largestNumber(vector<int> &nums) {
         string res;
         int size = nums.size();
 
@@ -360,7 +340,7 @@ public:
             strs[i] = to_string(nums[i]);
 
         sort(strs.begin(), strs.end(),
-            [](string a, string b) { return a + b > b + a; });
+             [](string a, string b) { return a + b > b + a; });
 
         for (int i = 0; i < size; ++i)
             res += strs[i];
@@ -368,8 +348,7 @@ public:
     }
 
     // 240
-    bool searchMatrix(vector<vector<int>>& matrix, int target)
-    {
+    bool searchMatrix(vector<vector<int>> &matrix, int target) {
         if (matrix.empty() || matrix[0].empty())
             return false;
 
@@ -388,9 +367,8 @@ public:
     }
 
     // 29
-    int divide(int dividend, int divisor)
-    {
-        auto m = (long long)dividend, n = (long long)divisor;
+    int divide(int dividend, int divisor) {
+        auto m = (long long) dividend, n = (long long) divisor;
 
         bool a = true, b = true;
         if (dividend < 0) {
@@ -414,12 +392,11 @@ public:
             m -= ns >> 1;
         }
         res = a ^ b ? -res : res;
-        return res > INT_MAX ? INT_MAX : (int)res;
+        return res > INT_MAX ? INT_MAX : (int) res;
     }
 
     // 287
-    int findDuplicate(vector<int>& nums)
-    {
+    int findDuplicate(vector<int> &nums) {
         if (nums.size() > 1) {
             int slow = nums[0], fast = nums[nums[0]];
             while (slow != fast) {
@@ -440,20 +417,18 @@ public:
     int lengthOfLongestSubstring(string s) { return 1; }
 
     // 144
-    vector<int> preorderTraversal(TreeNode* root)
-    {
+    vector<int> preorderTraversal(TreeNode *root) {
         vector<int> ret = vector<int>();
         return ret;
     }
 
     // ?
-    vector<vector<int>> generate(int numRows)
-    {
+    vector<vector<int>> generate(int numRows) {
         vector<vector<int>> ans(numRows);
         if (numRows == 0)
             return ans;
 
-        ans[0] = vector<int>{ 1 };
+        ans[0] = vector<int>{1};
         if (numRows > 1) {
             for (int i = 0; i < numRows - 1; ++i) {
                 vector<int> tmp(i + 2);
@@ -468,8 +443,7 @@ public:
         return ans;
     }
 
-    vector<int> getRow(int rowIndex)
-    {
+    vector<int> getRow(int rowIndex) {
         vector<int> res(rowIndex, 1), tmp = res;
         for (int i = 1; i < rowIndex; ++i) {
             for (int j = 1; j < i; ++j) {
@@ -480,13 +454,12 @@ public:
         return res;
     }
 
-    ListNode* reverseList(ListNode* head)
-    {
+    ListNode *reverseList(ListNode *head) {
         if (!(head && head->next))
             return head;
         ListNode *h = head, *bh = nullptr;
         while (h) {
-            ListNode* ah = h->next;
+            ListNode *ah = h->next;
             h->next = bh;
             bh = h;
             h = ah;
@@ -494,25 +467,118 @@ public:
         return bh;
     }
 
-    ListNode* reverseListRecursive(ListNode* head)
-    {
+    ListNode *reverseListRecursive(ListNode *head) {
         if (!(head && head->next))
             return head;
-        ListNode* l = reverseListRecursive(head->next);
+        ListNode *l = reverseListRecursive(head->next);
         head->next->next = head;
         head->next = nullptr;
         return l;
     }
+     */
+    ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
+        if (!l1 || (l2 && l1->val > l2->val)) swap(l1, l2);
+        if (l1) l1->next = mergeTwoLists(l1->next, l2);
+        return l1;
+    }
 };
 
-#define L newListNode
-#define T newTreeNode
+template<typename T>
+T GetMax(T a, T b) {
+    T result;
+    result = (a > b) ? a : b;
+    return (result);
+}
 
-int main()
-{
-    Solution s;
-    list<int> l;
-    vector<int> v{};
-    l.emplace_back(1);
-    IterPrint(v.begin(), v.end());
+template<>
+string GetMax<string>(string a, string b) {
+    if (a + b > b + a)
+        return b;
+    return a;
+};
+
+void process_value(int &i) {
+    std::cout << "LValue processed: " << i << std::endl;
+}
+
+void process_value(int &&i) {
+    std::cout << "RValue processed: " << i << std::endl;
+}
+
+void forward_value(int &&i) {
+    process_value(i);
+}
+
+class MyString {
+private:
+    char *_data;
+    size_t _len;
+
+    void _init_data(const char *s) {
+        _data = new char[_len + 1];
+        memcpy(_data, s, _len);
+        _data[_len] = '\0';
+    }
+
+public:
+    MyString() {
+        _data = NULL;
+        _len = 0;
+    }
+
+    MyString(const char *p) {
+        _len = strlen(p);
+        _init_data(p);
+    }
+
+    MyString(const MyString &str) {
+        _len = str._len;
+        _init_data(str._data);
+        std::cout << "Copy Constructor is called! source: " << str._data << std::endl;
+    }
+
+    MyString(MyString &&str) {
+        std::cout << "Move Constructor is called! source: " << str._data << std::endl;
+        _len = str._len;
+        _data = str._data;
+        str._len = 0;
+        str._data = NULL;
+    }
+
+    MyString &operator=(const MyString &str) {
+        if (this != &str) {
+            _len = str._len;
+            _init_data(str._data);
+        }
+        std::cout << "Copy Assignment is called! source: " << str._data << std::endl;
+        return *this;
+    }
+
+    virtual ~MyString() {
+        if (_data) free(_data);
+    }
+};
+
+
+struct A {
+    void a() { cout << "A" << endl; }
+
+    virtual ~A() { cout << "~A()" << endl; }
+};
+
+struct B : public A {
+    void a() { cout << "B" << endl; }
+
+
+    virtual ~B() { cout << "~B()" << endl; }
+};
+
+int main() {
+    A *a = new B();
+    a->a();
+    delete a;
+//    MyString a;
+//    a = MyString("Hello");
+//    std::vector<MyString> vec;
+//    vec.push_back(MyString("World"));
 }
