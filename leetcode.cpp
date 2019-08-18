@@ -561,7 +561,7 @@ public:
 
 
 struct A {
-    void a() { cout << "A" << endl; }
+/*    virtual*/ void a() { cout << "A" << endl; }
 
     virtual ~A() { cout << "~A()" << endl; }
 };
@@ -577,8 +577,5 @@ int main() {
     A *a = new B();
     a->a();
     delete a;
-//    MyString a;
-//    a = MyString("Hello");
-//    std::vector<MyString> vec;
-//    vec.push_back(MyString("World"));
+    list<int>l = {1,2,3};
 }
