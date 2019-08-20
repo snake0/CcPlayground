@@ -24,8 +24,9 @@
 // using namespace std;
 using namespace std;
 
-template<typename collection>
-void IterPrint(collection c) {
+template <typename collection>
+void IterPrint(collection c)
+{
     auto b = c.begin(), e = c.end();
     while (b != e)
         cout << *b++ << " ";
@@ -40,20 +41,24 @@ enum ORDER {
 
 struct ListNode {
     int val;
-    ListNode *next;
+    ListNode* next;
 
     ListNode(int x)
-            : val(x), next(nullptr) {
+        : val(x)
+        , next(nullptr)
+    {
     }
 };
 
-ListNode *newListNode(int val, ListNode *l) {
-    ListNode *head = new ListNode(val);
+ListNode* newListNode(int val, ListNode* l)
+{
+    ListNode* head = new ListNode(val);
     head->next = l;
     return head;
 }
 
-void deleteListNode(ListNode *l) {
+void deleteListNode(ListNode* l)
+{
     ListNode *ptr = l, *tmp;
     while (ptr) {
         tmp = ptr;
@@ -62,7 +67,8 @@ void deleteListNode(ListNode *l) {
     }
 }
 
-void coutListNode(ListNode *l) {
+void coutListNode(ListNode* l)
+{
     while (l) {
         cout << l->val << "->";
         l = l->next;
@@ -72,16 +78,20 @@ void coutListNode(ListNode *l) {
 
 struct TreeNode {
     int val;
-    TreeNode *left;
-    TreeNode *right;
+    TreeNode* left;
+    TreeNode* right;
 
     TreeNode(int x)
-            : val(x), left(nullptr), right(nullptr) {
+        : val(x)
+        , left(nullptr)
+        , right(nullptr)
+    {
     }
 };
 
-TreeNode *newTreeNode(int val, TreeNode *left, TreeNode *right) {
-    TreeNode *root = new TreeNode(val);
+TreeNode* newTreeNode(int val, TreeNode* left, TreeNode* right)
+{
+    TreeNode* root = new TreeNode(val);
     root->left = left;
     root->right = right;
     return root;
@@ -482,14 +492,16 @@ public:
     }
      */
     // 14
-    string longestCommonPrefix(vector<string> &strs) {
+    string longestCommonPrefix(vector<string>& strs)
+    {
         if (strs.empty())
             return "";
         string ret = strs[0];
         return ret;
     }
 
-    ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2)
+    {
         if (!l1 || (l2 && l1->val > l2->val))
             swap(l1, l2);
         if (l1)
@@ -498,61 +510,71 @@ public:
     }
 };
 
-template<typename T>
-T GetMax(T a, T b) {
+template <typename T>
+T GetMax(T a, T b)
+{
     T result;
     result = (a > b) ? a : b;
     return (result);
 }
 
-template<>
-string GetMax<string>(string a, string b) {
+template <>
+string GetMax<string>(string a, string b)
+{
     if (a + b > b + a)
         return b;
     return a;
 };
 
-void process_value(int &i) {
+void process_value(int& i)
+{
     std::cout << "LValue processed: " << i << std::endl;
 }
 
-void process_value(int &&i) {
+void process_value(int&& i)
+{
     std::cout << "RValue processed: " << i << std::endl;
 }
 
-void forward_value(int &&i) {
+void forward_value(int&& i)
+{
     process_value(i);
 }
 
 class MyString {
 private:
-    char *_data;
+    char* _data;
     size_t _len;
 
-    void _init_data(const char *s) {
+    void _init_data(const char* s)
+    {
         _data = new char[_len + 1];
         memcpy(_data, s, _len);
         _data[_len] = '\0';
     }
 
 public:
-    MyString() {
+    MyString()
+    {
         _data = NULL;
         _len = 0;
     }
 
-    MyString(const char *p) {
+    MyString(const char* p)
+    {
         _len = strlen(p);
         _init_data(p);
     }
 
-    MyString(const MyString &str) {
+    MyString(const MyString& str)
+    {
         _len = str._len;
         _init_data(str._data);
         std::cout << "Copy Constructor is called! source: " << str._data << std::endl;
     }
 
-    MyString(MyString &&str) {
+    MyString(MyString&& str)
+    {
         std::cout << "Move Constructor is called! source: " << str._data << std::endl;
         _len = str._len;
         _data = str._data;
@@ -560,7 +582,8 @@ public:
         str._data = NULL;
     }
 
-    MyString &operator=(const MyString &str) {
+    MyString& operator=(const MyString& str)
+    {
         if (this != &str) {
             _len = str._len;
             _init_data(str._data);
@@ -569,18 +592,20 @@ public:
         return *this;
     }
 
-    size_t size() {
+    size_t size()
+    {
         return _len;
     }
 
-    virtual ~MyString() {
+    virtual ~MyString()
+    {
         if (_data)
             free(_data);
     }
 };
 
 struct A {
-/*    virtual*/ void a() { cout << "A" << endl; }
+    /*    virtual*/ void a() { cout << "A" << endl; }
 
     virtual ~A() { cout << "~A()" << endl; }
 };
@@ -591,22 +616,57 @@ struct B : public A {
     virtual ~B() { cout << "~B()" << endl; }
 };
 
-template<class T, T v>
-struct integral_constant {
-    static constexpr T value = v;
-    typedef T value_type;
-    typedef integral_constant<T, v> type;
+// C++11 constexpr functions use recursion rather than iteration
+// (C++14 constexpr functions may use local variables and loops)
+constexpr int factorial(int n)
+{
+    return n <= 1 ? 1 : (n * factorial(n - 1));
+}
 
-    constexpr operator T() { return v; }
+// literal class
+class conststr {
+    const char* p;
+    std::size_t sz;
+
+public:
+    template <std::size_t N>
+    constexpr conststr(const char (&a)[N])
+        : p(a)
+        , sz(N - 1)
+    {
+    }
+
+    // constexpr functions signal errors by throwing exceptions
+    // in C++11, they must do so from the conditional operator ?:
+    constexpr char operator[](std::size_t n) const
+    {
+        return n < sz ? p[n] : throw std::out_of_range("");
+    }
+    constexpr std::size_t size() const { return sz; }
 };
 
-using one_type = std::integral_constant<int, 1>;
+// C++11 constexpr functions had to put everything in a single return statement
+// (C++14 doesn't have that requirement)
+constexpr std::size_t countlower(conststr s, std::size_t n = 0,
+    std::size_t c = 0)
+{
+    return n == s.size() ? c : 'a' <= s[n] && s[n] <= 'z' ? countlower(s, n + 1, c + 1) : countlower(s, n + 1, c);
+}
 
-struct two_type : std::integral_constant<int, 2> {};
+// output function that requires a compile-time constant, for testing
+template <int n>
+struct constN {
+    constN() { std::cout << n << '\n'; }
+};
 
-int main(void) {
-    // Solution s;
-    vector<string> v = {"flower", "flow", "flight"};
-    two_type l;
-    cout << l.value;
+int main()
+{
+    std::cout << "4! = ";
+    constN<factorial(4)> out1; // computed at compile time
+
+    volatile int k = 8; // disallow optimization using volatile
+    std::cout << k << "! = " << factorial(k) << '\n'; // computed at run time
+
+    std::cout << "the number of lowercase letters in \"Hello, world!\" is ";
+    constN<countlower("Hello, world!")> out2; // implicitly converted to conststr
 }
