@@ -98,11 +98,11 @@ vector<int> bfs(TreeNode *root) {
     top = back.first;
     s.pop();
 
-    if (cur_level > old_level)
 #ifdef PRINT
-      cout << endl
+    if (cur_level > old_level)
+      cout << endl;
 #endif
-      ;
+
     if (top) {
 #ifdef PRINT
       cout << top->val << " ";
@@ -110,11 +110,10 @@ vector<int> bfs(TreeNode *root) {
       res.push_back(top->val);
       s.emplace(make_pair(top->left, cur_level + 1));
       s.emplace(make_pair(top->right, cur_level + 1));
-    } else
+    }
 #ifdef PRINT
-      cout << "ph "
+    else cout << "ph ";
 #endif
-      ;
     old_level = cur_level;
   }
   return res;
