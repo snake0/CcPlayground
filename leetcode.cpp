@@ -18,6 +18,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <cstring>
 
 // #define PRINT
 
@@ -102,38 +103,37 @@ TreeNode* newTreeNode(int val, TreeNode* left, TreeNode* right)
 
 /*
 vector<int> bfs(TreeNode *root) {
-    queue<pair<TreeNode *, int>> s;
-    s.push(make_pair(root, 0));
-    int old_level = ~(1 << 31);
-    vector<int> res(0);
+  queue<pair<TreeNode *, int>> s;
+  s.push(make_pair(root, 0));
+  int old_level = ~(1 << 31);
+  vector<int> res(0);
 
-    TreeNode *top;
-    while (!s.empty()) {
-        auto back = s.front();
-        int cur_level = back.second;
-        top = back.first;
-        s.pop();
+  TreeNode *top;
+  while (!s.empty()) {
+    auto back = s.front();
+    int cur_level = back.second;
+    top = back.first;
+    s.pop();
 
 #ifdef PRINT
-        if (cur_level > old_level)
-            cout << endl;
+    if (cur_level > old_level)
+      cout << endl;
 #endif
 
-        if (top) {
+    if (top) {
 #ifdef PRINT
             cout << top->val << " ";
 #endif
-            res.push_back(top->val);
-            s.emplace(make_pair(top->left, cur_level + 1));
-            s.emplace(make_pair(top->right, cur_level + 1));
-        }
-#ifdef PRINT
-        else
-            cout << "ph ";
-#endif
-        old_level = cur_level;
+      res.push_back(top->val);
+      s.emplace(make_pair(top->left, cur_level + 1));
+      s.emplace(make_pair(top->right, cur_level + 1));
     }
-    return res;
+#ifdef PRINT
+    else cout << "ph ";
+#endif
+    old_level = cur_level;
+  }
+  return res;
 }
 
 vector<int> dfs(TreeNode *root, ORDER order) {
