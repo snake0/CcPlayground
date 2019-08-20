@@ -38,3 +38,4 @@ edit
 .vscode/
 leetcode
 license.dash-license
+*.DS_Store

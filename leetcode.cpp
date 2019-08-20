@@ -592,17 +592,21 @@ struct B : public A {
 };
 
 template<class T, T v>
-struct integral_constant;
+struct integral_constant {
+    static constexpr T value = v;
+    typedef T value_type;
+    typedef integral_constant<T, v> type;
+
+    constexpr operator T() { return v; }
+};
 
 using one_type = std::integral_constant<int, 1>;
 
-template<class T>
-struct two_type :
-        std::integral_constant<int, 2> {
-};
+struct two_type : std::integral_constant<int, 2> {};
 
 int main(void) {
     // Solution s;
     vector<string> v = {"flower", "flow", "flight"};
-    cout << v.at(9);
+    two_type l;
+    cout << l.value;
 }
