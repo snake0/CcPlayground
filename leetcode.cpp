@@ -21,6 +21,7 @@
 
 // #define PRINT
 
+// using namespace std;
 using namespace std;
 
 template<typename collection>
@@ -41,7 +42,9 @@ struct ListNode {
     int val;
     ListNode *next;
 
-    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x)
+            : val(x), next(nullptr) {
+    }
 };
 
 ListNode *newListNode(int val, ListNode *l) {
@@ -72,7 +75,9 @@ struct TreeNode {
     TreeNode *left;
     TreeNode *right;
 
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x)
+            : val(x), left(nullptr), right(nullptr) {
+    }
 };
 
 TreeNode *newTreeNode(int val, TreeNode *left, TreeNode *right) {
@@ -476,9 +481,19 @@ public:
         return l;
     }
      */
+    // 14
+    string longestCommonPrefix(vector<string> &strs) {
+        if (strs.empty())
+            return "";
+        string ret = strs[0];
+        return ret;
+    }
+
     ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
-        if (!l1 || (l2 && l1->val > l2->val)) swap(l1, l2);
-        if (l1) l1->next = mergeTwoLists(l1->next, l2);
+        if (!l1 || (l2 && l1->val > l2->val))
+            swap(l1, l2);
+        if (l1)
+            l1->next = mergeTwoLists(l1->next, l2);
         return l1;
     }
 };
@@ -554,11 +569,15 @@ public:
         return *this;
     }
 
+    size_t size() {
+        return _len;
+    }
+
     virtual ~MyString() {
-        if (_data) free(_data);
+        if (_data)
+            free(_data);
     }
 };
-
 
 struct A {
 /*    virtual*/ void a() { cout << "A" << endl; }
@@ -569,13 +588,21 @@ struct A {
 struct B : public A {
     void a() { cout << "B" << endl; }
 
-
     virtual ~B() { cout << "~B()" << endl; }
 };
 
-int main() {
-    A *a = new B();
-    a->a();
-    delete a;
-    list<int>l = {1,2,3};
+template<class T, T v>
+struct integral_constant;
+
+using one_type = std::integral_constant<int, 1>;
+
+template<class T>
+struct two_type :
+        std::integral_constant<int, 2> {
+};
+
+int main(void) {
+    // Solution s;
+    vector<string> v = {"flower", "flow", "flight"};
+    cout << v.at(9);
 }
