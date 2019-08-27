@@ -5,5 +5,7 @@ class Solution:
         """
         s = ''.join(i for i in s if i.isalnum()).lower()
         return s == s[::-1]
-s=Solution()
+
+
+s = Solution()
 print(s.isPalindrome2("2002"))
