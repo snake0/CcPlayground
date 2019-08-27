@@ -2,12 +2,12 @@
 // Created by SNAKE on 2019-08-27.
 //
 
-#include "include_for_c.h"
+#include "csapp.h"
 
 int main() {
     pid_t pid;
-    if ((pid = fork()) == 0) {
-        pause();
+    if ((pid = Fork()) == 0) {
+        Pause();
         printf("control never reach here\n");
         exit(0);
     }
