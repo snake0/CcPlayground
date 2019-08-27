@@ -2,15 +2,15 @@
 
 #define THREADS 20
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-spinlock_t lk;
+ticketlock_t lk;
 
 void* worker(void* args) {
     int* str = (int*) args;
-//    spinlock_lock(&lk);
+    ticketlock_lock(&lk);
 //    pthread_mutex_lock(&mutex);
 
     printf("%d ", ++*str);
-//    spinlock_unlock(&lk);
+    ticketlock_unlock(&lk);
 //    pthread_mutex_unlock(&mutex);
 
     return 0;

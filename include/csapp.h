@@ -26,7 +26,9 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+
 #include <sched.h>
+#include <stdatomic.h>
 
 
 /* Default file permissions are DEF_MODE & ~DEF_UMASK */

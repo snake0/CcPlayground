@@ -9,48 +9,48 @@
 
 #include "csapp.h"
 
-static inline uint32_t xchg(volatile uint32_t* addr, uint32_t newval) {
-    uint32_t result;
+/************* primitives *************/
+inline uint32_t test_and_set(volatile uint32_t* addr, uint32_t newval);
 
-    // The + in "+m" denotes a read-modify-write operand.
-    asm volatile("lock; xchgl %0, %1"
-    : "+m"(*addr), "=a"(result)
-    : "1"(newval)
-    : "cc");
-    return result;
-}
+inline uint32_t compare_and_swap(volatile uint32_t* addr, uint32_t oldval, uint32_t newval);
 
-/* spinlock */
+inline uint32_t fetch_and_add(volatile uint32_t* addr);
+
+
+/************ spinlock *************/
 typedef struct {
-    volatile unsigned locked;
+    volatile uint32_t locked;
 } spinlock_t;
 
-inline void spinlock_init(spinlock_t* lock) {
-    lock->locked = 0;
-}
+inline void spinlock_init(spinlock_t* lk);
 
-void spinlock_lock(spinlock_t* lock) {
-    while (xchg(&lock->locked, 1) != 0)
-        asm volatile("pause");
-}
+void spinlock_lock(spinlock_t* lk);
 
-inline void spinlock_unlock(spinlock_t* lock) {
-    xchg(&lock->locked, 0);
-}
+void spinlock_unlock(spinlock_t* lk);
 
-/* mcslock */
+/************* ticketlock *************/
+typedef struct {
+    uint32_t ticket;
+    uint32_t turn;
+} ticketlock_t;
+
+inline void ticketlock_init(ticketlock_t* lk);
+
+void ticketlock_lock(ticketlock_t* lk);
+
+inline void ticketlock_unlock(ticketlock_t* lk);
+
+/************* mcslock *************/
 static struct _mcslock_node {
-    struct _mcslock_node* volatile next; /*next one waiting the lock*/
-    volatile char wait;                  /*should wait or not*/
+    struct _mcslock_node* volatile next; /*************next one waiting the lk*************/
+    volatile char wait;                  /*************should wait or not*************/
 } __attribute__((__aligned__(MCT_CACHELINE_BYTES))) mcslock_node;
 
 typedef struct {
-    struct _mcslock_node* volatile tail;        /*queue tail*/
+    struct _mcslock_node* volatile tail;        /*************queue tail*************/
 } mcslock_t;
 
 
-inline void mcs_lock_init(mcslock_t* lock) {
-    lock->tail = NULL;
-}
+inline void mcs_lock_init(mcslock_t* lk);
 
 #endif
