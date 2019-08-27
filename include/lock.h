@@ -1,0 +1,56 @@
+//
+// Created by SNAKE on 2019-08-27.
+//
+#ifndef MCT_CACHELINE_BYTES
+#define MCT_CACHELINE_BYTES 64
+#endif
+
+static inline uint32_t xchg(volatile uint32_t* addr, uint32_t newval) {
+    uint32_t result;
+
+    // The + in "+m" denotes a read-modify-write operand.
+    asm volatile("lock; xchgl %0, %1"
+    : "+m"(*addr), "=a"(result)
+    : "1"(newval)
+    : "cc");
+    return result;
+}
+
+/* spinlock */
+typedef struct {
+    volatile unsigned locked;
+} spinlock_t;
+
+spinlock_t* spinlock_init() {
+    spinlock_t* lock = (spinlock_t*) malloc(sizeof(spinlock_t));
+    lock->locked = 0;
+    return lock;
+}
+
+void spinlock_lock(spinlock_t* lock) {
+    while (xchg(&lock->locked, 1) != 0)
+        asm volatile("pause");
+}
+
+void spinlock_unlock(spinlock_t* lock) {
+    xchg(&lock->locked, 0);
+}
+
+void spinlock_destroy(spinlock_t* lock) {
+    free(lock);
+}
+
+/* mcslock */
+struct _mcslock_node {
+    struct _mcslock_node* volatile next; /*next one waiting the lock*/
+    volatile char wait;                  /*should wait or not*/
+} __attribute__((__aligned__(MCT_CACHELINE_BYTES))) mcslock_node;
+
+typedef struct {
+    struct _mcslock_node* volatile tail;        /*queue tail*/
+} mcslock_t;
+
+
+inline void mcs_lock_init(mcslock_t* lock) {
+    lock->tail = NULL;
+}
