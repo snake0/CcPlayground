@@ -77,9 +77,6 @@ TreeNode* newTreeNode(int val, TreeNode* left, TreeNode* right) {
   return root;
 }
 
-#define L newListNode
-#define T newTreeNode
-
 std::vector<int> bfs(TreeNode* root) {
   std::queue<std::pair<TreeNode*, int>> s;
   s.push(std::make_pair(root, 0));
@@ -149,5 +146,8 @@ std::vector<int> dfs(TreeNode* root, ORDER order) {
   }
   return path;
 }
+
+#define L newListNode
+#define T newTreeNode
 
 #endif //LEETCODE_INCLUDE_H
