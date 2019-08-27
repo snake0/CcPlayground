@@ -27,16 +27,16 @@ public:
   }
 
   // 102
-  vector <vector<int>> levelOrder(TreeNode* root) {
-    vector <vector<int>> res;
+  std::vector <std::vector<int>> levelOrder(TreeNode* root) {
+    std::vector <std::vector<int>> res;
     if (root == nullptr)
       return res;
 
-    queue < TreeNode * > q;
+    std::queue < TreeNode * > q;
     q.push(root);
 
     while (!q.empty()) {
-      vector<int> oneLevel;
+      std::vector<int> oneLevel;
       for (int i = q.size(); i > 0; --i) {
         TreeNode* t = q.front();
         q.pop();
@@ -58,7 +58,7 @@ public:
   ListNode* rotateRight(ListNode* head, int k) {
     if (!head || !head->next || !k)
       return head;
-    vector < ListNode * > list;
+    std::vector < ListNode * > list;
     ListNode* h = head;
     for (; h; h = h->next)
       list.push_back(h);
@@ -109,7 +109,7 @@ public:
   }
 
   // 23
-  ListNode* mergeKLists(vector<ListNode*>& lists) {
+  ListNode* mergeKLists(std::vector<ListNode*>& lists) {
     int n = lists.size();
     if (n == 0)
       return nullptr;
@@ -117,7 +117,7 @@ public:
     return lists[0];
   }
 
-  void merge(vector<ListNode*>& lists, int left, int right) {
+  void merge(std::vector<ListNode*>& lists, int left, int right) {
     if (left == right)
       return;
     int mid = (left + right) / 2;
@@ -168,16 +168,16 @@ public:
   }
 
   // 179
-  string largestNumber(vector<int>& nums) {
-    string res;
+  std::string largestNumber(std::vector<int>& nums) {
+    std::string res;
     int size = nums.size();
 
-    vector <string> strs = vector<string>(size);
+    std::vector <std::string> strs = std::vector<std::string>(size);
     for (int i = 0; i < size; ++i)
-      strs[i] = to_string(nums[i]);
+      strs[i] = std::to_string(nums[i]);
 
     sort(strs.begin(), strs.end(),
-         [](string a, string b) { return a + b > b + a; });
+         [](std::string a, std::string b) { return a + b > b + a; });
 
     for (int i = 0; i < size; ++i)
       res += strs[i];
@@ -185,7 +185,7 @@ public:
   }
 
   // 240
-  bool searchMatrix(vector <vector<int>>& matrix, int target) {
+  bool searchMatrix(std::vector <std::vector<int>>& matrix, int target) {
     if (matrix.empty() || matrix[0].empty())
       return false;
 
@@ -233,7 +233,7 @@ public:
   }
 
   // 287
-  int findDuplicate(vector<int>& nums) {
+  int findDuplicate(std::vector<int>& nums) {
     if (nums.size() > 1) {
       int slow = nums[0], fast = nums[nums[0]];
       while (slow != fast) {
@@ -251,24 +251,24 @@ public:
   }
 
   // 3
-  int lengthOfLongestSubstring(string s) { return 1; }
+  int lengthOfLongestSubstring(std::string s) { return 1; }
 
   // 144
-  vector<int> preorderTraversal(TreeNode* root) {
-    vector<int> ret = vector<int>();
+  std::vector<int> preorderTraversal(TreeNode* root) {
+    std::vector<int> ret = std::vector<int>();
     return ret;
   }
 
   // ?
-  vector <vector<int>> generate(int numRows) {
-    vector <vector<int>> ans(numRows);
+  std::vector <std::vector<int>> generate(int numRows) {
+    std::vector <std::vector<int>> ans(numRows);
     if (numRows == 0)
       return ans;
 
-    ans[0] = vector < int > {1};
+    ans[0] = std::vector < int > {1};
     if (numRows > 1) {
       for (int i = 0; i < numRows - 1; ++i) {
-        vector<int> tmp(i + 2);
+        std::vector<int> tmp(i + 2);
         tmp[0] = 1;
         tmp[i + 1] = 1;
         for (int j = 1; j < ans[i].size(); ++j) {
@@ -280,8 +280,8 @@ public:
     return ans;
   }
 
-  vector<int> getRow(int rowIndex) {
-    vector<int> res(rowIndex, 1), tmp = res;
+  std::vector<int> getRow(int rowIndex) {
+    std::vector<int> res(rowIndex, 1), tmp = res;
     for (int i = 1; i < rowIndex; ++i) {
       for (int j = 1; j < i; ++j) {
         tmp[j] = res[j - 1] + res[j];
@@ -314,16 +314,16 @@ public:
   }
 
   // 14
-  string longestCommonPrefix(vector <string>& strs) {
+  std::string longestCommonPrefix(std::vector <std::string>& strs) {
     if (strs.empty())
       return "";
-    string ret = strs[0];
+    std::string ret = strs[0];
     return ret;
   }
 
   ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
     if (!l1 || (l2 && l1->val > l2->val))
-      swap(l1, l2);
+      std::swap(l1, l2);
     if (l1)
       l1->next = mergeTwoLists(l1->next, l2);
     return l1;
