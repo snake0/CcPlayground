@@ -1,9 +1,13 @@
 //
 // Created by SNAKE on 2019-08-27.
 //
+#ifndef LOCK_H
+#define LOCK_H
 #ifndef MCT_CACHELINE_BYTES
 #define MCT_CACHELINE_BYTES 64
 #endif
+
+#include "include_for_c.h"
 
 static inline uint32_t xchg(volatile uint32_t* addr, uint32_t newval) {
     uint32_t result;
@@ -21,10 +25,8 @@ typedef struct {
     volatile unsigned locked;
 } spinlock_t;
 
-spinlock_t* spinlock_init() {
-    spinlock_t* lock = (spinlock_t*) malloc(sizeof(spinlock_t));
+void spinlock_init(spinlock_t *lock) {
     lock->locked = 0;
-    return lock;
 }
 
 void spinlock_lock(spinlock_t* lock) {
@@ -34,10 +36,6 @@ void spinlock_lock(spinlock_t* lock) {
 
 void spinlock_unlock(spinlock_t* lock) {
     xchg(&lock->locked, 0);
-}
-
-void spinlock_destroy(spinlock_t* lock) {
-    free(lock);
 }
 
 /* mcslock */
@@ -54,3 +52,5 @@ typedef struct {
 inline void mcs_lock_init(mcslock_t* lock) {
     lock->tail = NULL;
 }
+
+#endif

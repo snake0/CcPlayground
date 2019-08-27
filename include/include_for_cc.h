@@ -54,10 +54,8 @@ ListNode* newListNode(int val, ListNode* l) {
 }
 
 void coutListNode(ListNode* l) {
-    while (l) {
+    for (ListNode* h = l; h; h = h->next)
         cout << l->val << "->";
-        l = l->next;
-    }
     cout << "p" << endl;
 }
 

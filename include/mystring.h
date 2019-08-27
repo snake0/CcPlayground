@@ -1,3 +1,6 @@
+#ifndef MYSTRING_H
+#define MYSTRING_H
+
 #include "include_for_cc.h"
 
 class MyString{
@@ -56,7 +59,4 @@ class MyString{
             free(_data);
     }
 };
-
-int main() {
-
-}
+#endif
