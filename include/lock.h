@@ -25,7 +25,7 @@ typedef struct {
     volatile unsigned locked;
 } spinlock_t;
 
-void spinlock_init(spinlock_t* lock) {
+inline void spinlock_init(spinlock_t* lock) {
     lock->locked = 0;
 }
 
@@ -34,7 +34,7 @@ void spinlock_lock(spinlock_t* lock) {
         asm volatile("pause");
 }
 
-void spinlock_unlock(spinlock_t* lock) {
+inline void spinlock_unlock(spinlock_t* lock) {
     xchg(&lock->locked, 0);
 }
 
