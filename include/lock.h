@@ -25,7 +25,7 @@ typedef struct {
     volatile unsigned locked;
 } spinlock_t;
 
-void spinlock_init(spinlock_t *lock) {
+void spinlock_init(spinlock_t* lock) {
     lock->locked = 0;
 }
 
@@ -39,7 +39,7 @@ void spinlock_unlock(spinlock_t* lock) {
 }
 
 /* mcslock */
-struct _mcslock_node {
+static struct _mcslock_node {
     struct _mcslock_node* volatile next; /*next one waiting the lock*/
     volatile char wait;                  /*should wait or not*/
 } __attribute__((__aligned__(MCT_CACHELINE_BYTES))) mcslock_node;

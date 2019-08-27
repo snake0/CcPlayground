@@ -34,8 +34,5 @@
 .idea/
 cmake-build-debug/
 CMakeLists.txt
-edit
 .vscode/
-leetcode
-license.dash-license
 *.DS_Store

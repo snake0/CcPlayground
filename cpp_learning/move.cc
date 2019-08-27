@@ -3,7 +3,7 @@
 int main() {
     /* std::move */
     std::string str = "Hello";
-    std::vector <std::string> v;
+    std::vector<std::string> v;
 
     // uses the push_back(const T&) overload, which means 
     // we'll incur the cost of copying str
