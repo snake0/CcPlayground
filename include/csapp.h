@@ -29,6 +29,7 @@
 
 #include <sched.h>
 #include <stdatomic.h>
+#include <stdint.h>
 
 
 /* Default file permissions are DEF_MODE & ~DEF_UMASK */
