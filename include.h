@@ -34,7 +34,6 @@
 #include <vector>
 
 using namespace std;
-
 #define DEBUG_LOG true
 
 enum ORDER {
@@ -56,10 +55,10 @@ ListNode* newListNode(int val, ListNode* l) {
 
 void coutListNode(ListNode* l) {
   while (l) {
-    std::cout << l->val << "->";
+    cout << l->val << "->";
     l = l->next;
   }
-  std::cout << "p" << std::endl;
+  cout << "p" << endl;
 }
 
 struct TreeNode {
@@ -77,11 +76,11 @@ TreeNode* newTreeNode(int val, TreeNode* left, TreeNode* right) {
   return root;
 }
 
-std::vector<int> bfs(TreeNode* root) {
-  std::queue<std::pair<TreeNode*, int>> s;
-  s.push(std::make_pair(root, 0));
+vector<int> bfs(TreeNode* root) {
+  queue<pair<TreeNode*, int>> s;
+  s.push(make_pair(root, 0));
   int old_level = ~(1 << 31);
-  std::vector<int> res(0);
+  vector<int> res(0);
 
   TreeNode* top;
   while (!s.empty()) {
@@ -91,27 +90,27 @@ std::vector<int> bfs(TreeNode* root) {
     s.pop();
 
     if (cur_level > old_level && DEBUG_LOG)
-      std::cout << std::endl;
+      cout << endl;
 
     if (top) {
       if (DEBUG_LOG)
-        std::cout << top->val << " ";
+        cout << top->val << " ";
       res.push_back(top->val);
-      s.emplace(std::make_pair(top->left, cur_level + 1));
-      s.emplace(std::make_pair(top->right, cur_level + 1));
+      s.emplace(make_pair(top->left, cur_level + 1));
+      s.emplace(make_pair(top->right, cur_level + 1));
     } else if (DEBUG_LOG)
-      std::cout << "p ";
+      cout << "p ";
     old_level = cur_level;
   }
   return res;
 }
 
-std::vector<int> dfs(TreeNode* root, ORDER order) {
+vector<int> dfs(TreeNode* root, ORDER order) {
   assert(order >= PRE && order <= POST);
 
-  std::vector<int> path(0);
-  std::stack<std::pair<TreeNode*, bool>> s;
-  s.push(std::make_pair(root, false));
+  vector<int> path(0);
+  stack<pair<TreeNode*, bool>> s;
+  s.push(make_pair(root, false));
 
   bool visited;
   while (!s.empty()) {
@@ -123,8 +122,8 @@ std::vector<int> dfs(TreeNode* root, ORDER order) {
     if (visited) {
       path.push_back(root->val);
     } else {
-      auto n = std::make_pair(root, true), l = std::make_pair(root->left, false);
-      auto r = std::make_pair(root->right, false);
+      auto n = make_pair(root, true), l = make_pair(root->left, false);
+      auto r = make_pair(root->right, false);
       switch (order) {
         case PRE:
           s.push(r);

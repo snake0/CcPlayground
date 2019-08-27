@@ -8,4 +8,4 @@ class Solution:
 
 
 s = Solution()
-print(s.isPalindrome2("2002"))
+print("hello world")

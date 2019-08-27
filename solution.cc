@@ -2,6 +2,7 @@
 
 class Solution {
 public:
+/* 
   // 142
   ListNode* detectCycle(ListNode* head) {
     ListNode* fast = head, * slow = head;
@@ -320,6 +321,7 @@ public:
     std::string ret = strs[0];
     return ret;
   }
+  */
 
   ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
     if (!l1 || (l2 && l1->val > l2->val))
@@ -331,5 +333,5 @@ public:
 };
 
 int main() {
-
+  cout << "hello world";
 }
