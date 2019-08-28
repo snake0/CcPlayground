@@ -7,16 +7,15 @@
 
 #include "csapp.h"
 
-void prstr(const char *str,size_t size) {
-    while(size--)
-        printf("%c",*str++);
+void prstr(const char* str, size_t size) {
+    while (size--)
+        printf("%c", *str++);
     printf("\n");
 }
 
 void* fast_memcpy(void* dst, const void* src, size_t len) {
     if (!(dst && src))
         return NULL;
-
     void* ret = dst;
     size_t size = len;
 
@@ -29,51 +28,27 @@ void* fast_memcpy(void* dst, const void* src, size_t len) {
     size_t size8 = size;
 
     if (dst <= src || dst >= src + len) {
-        while (size64--) {
-            *(uint64_t*) dst = *(uint64_t*) src;
-            dst = (uint64_t*) dst + 1;
-            src = (uint64_t*) src + 1;
-        }
-        while (size32--) {
-            *(uint32_t*) dst = *(uint32_t*) src;
-            dst = (uint32_t*) dst + 1;
-            src = (uint32_t*) src + 1;
-        }
-        while (size16--) {
-            *(uint16_t*) dst = *(uint16_t*) src;
-            dst = (uint16_t*) dst + 1;
-            src = (uint16_t*) src + 1;
-        }
-        while (size8--) {
-            *(uint8_t*) dst = *(uint8_t*) src;
-            dst = (uint8_t*) dst + 1;
-            src = (uint8_t*) src + 1;
-        }
-
+        while (size64--)
+            *(uint64_t*) (dst += 8) = *(uint64_t*) (src += 8);
+        while (size32--)
+            *(uint32_t*) (dst += 4) = *(uint32_t*) (src += 4);
+        while (size16--)
+            *(uint16_t*) (dst += 2) = *(uint16_t*) (src += 2);
+        while (size8--)
+            *(uint8_t*) ++dst = *(uint8_t*) ++src;
     } else {
-        src += len - 1;
-        dst += len - 1;
-        while (size64--) {
-            *(uint64_t*) dst = *(uint64_t*) src;
-            dst = (uint64_t*) dst - 1;
-            src = (uint64_t*) src - 1;
-        }
-        while (size32--) {
-            *(uint32_t*) dst = *(uint32_t*) src;
-            dst = (uint32_t*) dst - 1;
-            src = (uint32_t*) src - 1;
-        }
-        while (size16--) {
-            *(uint16_t*) dst = *(uint16_t*) src;
-            dst = (uint16_t*) dst - 1;
-            src = (uint16_t*) src - 1;
-        }
-        while (size8--) {
-            *(uint8_t*) dst = *(uint8_t*) src;
-            dst = (uint8_t*) dst - 1;
-            src = (uint8_t*) src - 1;
-        }
+        src += len;
+        dst += len;
+        while (size8--)
+            *(uint8_t*) --dst = *(uint8_t*) --src;
+        while (size16--)
+            *(uint16_t*) (dst -= 2) = *(uint16_t*) (src -= 2);
+        while (size32--)
+            *(uint32_t*) (dst -= 4) = *(uint32_t*) (src -= 4);
+        while (size64--)
+            *(uint64_t*) (dst -= 8) = *(uint64_t*) (src -= 8);
     }
+
     return ret;
 }
 

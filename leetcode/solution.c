@@ -22,7 +22,11 @@ void* thread(void* args) {
 
 void test_memcpy() {
     char* p = malloc(100);
-    p="12345";
+    p[0] = '1';
+    p[1] = '2';
+    p[2] = '3';
+    p[3] = '4';
+    p[4] = '5';
     const int start = 2;
     const int len = 5;
     fast_memcpy(p + start, p, len);
