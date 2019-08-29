@@ -3,7 +3,7 @@
 //
 #include "memcpy.h"
 
-#define COUNT 2000
+#define COUNT 200
 #define SENDCORE 2
 
 #define NANO 1000000000
@@ -83,8 +83,8 @@ void test_memcpy(enum MC_CHOICE c) {
 
         timespec_sub(&end, &begin);
         timec = end.tv_sec * MILI + end.tv_nsec / KILO;
-        printf("\tCLOCK_MONOTONIC report: %.3fus for copy %d times %dKB\n",
-               1.0 * timec / COUNT, COUNT, size >> 10);
+        printf("\tCLOCK_MONOTONIC report: %.3fus for copy %d times %lluKB\n",
+               1.0 * timec / COUNT, COUNT, size >> 10u);
         size <<= 1;
     }
     free(src);

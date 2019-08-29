@@ -8,30 +8,28 @@
 #include "csapp.h"
 #include "sync_prim.h"
 
-/************* primitives *************/
-inline uint32_t test_and_set(volatile uint32_t* addr, uint32_t newval);
-inline uint32_t compare_and_swap(volatile uint32_t* addr, uint32_t oldval, uint32_t newval);
-inline uint32_t fetch_and_add(volatile uint32_t* addr);
-
-
 /************ spinlock *************/
-typedef struct {
+typedef struct __spinlock_t {
     volatile uint32_t locked;
 } spinlock_t;
 
-inline void spinlock_init(spinlock_t* lk);
+inline void spinlock_init(spinlock_t* lk) { lk->locked = 0; }
+
 void spinlock_lock(spinlock_t* lk);
-void spinlock_unlock(spinlock_t* lk);
+
+inline void spinlock_unlock(spinlock_t* lk) { lk->locked = 0; }
 
 /************* ticketlock *************/
-typedef struct {
+typedef struct __ticketlock_t {
     uint32_t ticket;
     uint32_t turn;
 } ticketlock_t;
 
-inline void ticketlock_init(ticketlock_t* lk);
+inline void ticketlock_init(ticketlock_t* lk) { memset(lk, 0, sizeof(ticketlock_t)); }
+
 void ticketlock_lock(ticketlock_t* lk);
-inline void ticketlock_unlock(ticketlock_t* lk);
+
+inline void ticketlock_unlock(ticketlock_t* lk) { ++lk->turn; }
 
 /************* mcslock *************/
 static struct _mcslock_node {
@@ -39,12 +37,13 @@ static struct _mcslock_node {
     volatile char wait;                  /* should wait or not */
 } __attribute__((__aligned__(MCT_CACHELINE_BYTES))) mcslock_node;
 
-typedef struct {
+typedef struct __mcslock_t {
     struct _mcslock_node* volatile tail;        /* queue tail */
 } mcslock_t;
 
 
-void mcslock_init(mcslock_t* lk);
+inline void mcslock_init(mcslock_t* lk) { lk->tail = NULL; }
+
 void mcslock_lock(mcslock_t* lk, struct _mcslock_node* mynode);
 void mcslock_unlock(mcslock_t* lk, struct _mcslock_node* mynode);
 
