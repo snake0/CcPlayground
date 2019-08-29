@@ -27,10 +27,11 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#define __USE_GNU
 #include <sched.h>
 #include <stdatomic.h>
 #include <stdint.h>
-
+#include <assert.h>
 
 /* Default file permissions are DEF_MODE & ~DEF_UMASK */
 /* $begin createmasks */
