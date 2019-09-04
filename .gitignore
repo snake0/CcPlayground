@@ -33,6 +33,6 @@
 
 .idea/
 cmake-build-debug/
-CMakeLists.txt
+cmake-build-release/
 .vscode/
 *.DS_Store
