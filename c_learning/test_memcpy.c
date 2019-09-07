@@ -3,7 +3,7 @@
 //
 #include "memcpy.h"
 
-#define COUNT 2000
+#define COUNT 1000
 #define SENDCORE 2
 
 #define NANO 1000000000
