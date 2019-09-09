@@ -28,6 +28,7 @@
 #include <arpa/inet.h>
 
 #define __USE_GNU
+
 #include <sched.h>
 #include <stdatomic.h>
 #include <stdint.h>
@@ -48,10 +49,10 @@ typedef struct sockaddr SA;
 /* $begin rio_t */
 #define RIO_BUFSIZE 8192
 typedef struct {
-    int rio_fd;                /* descriptor for this internal buf */
-    int rio_cnt;               /* unread bytes in internal buf */
-    char* rio_bufptr;          /* next unread byte in internal buf */
-    char rio_buf[RIO_BUFSIZE]; /* internal buffer */
+  int rio_fd;                /* descriptor for this internal buf */
+  int rio_cnt;               /* unread bytes in internal buf */
+  char* rio_bufptr;          /* next unread byte in internal buf */
+  char rio_buf[RIO_BUFSIZE]; /* internal buffer */
 } rio_t;
 /* $end rio_t */
 

@@ -11,15 +11,15 @@ using namespace std;
 typedef vector<IntCell> IntCells;
 
 int randItem(IntCells&& rcells) {
-    cout << "rvalue\n";
-    return rcells[rand() % rcells.size()].read();
+  cout << "rvalue\n";
+  return rcells[rand() % rcells.size()].read();
 }
 
 int randItem(const IntCells& lcells) {
-    cout << "lvalue\n";
-    return lcells[rand() % lcells.size()].read();
+  cout << "lvalue\n";
+  return lcells[rand() % lcells.size()].read();
 }
 
 int main() {
-    cout << randItem({IntCell(1)});
+  cout << randItem({IntCell(1)});
 }

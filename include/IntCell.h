@@ -7,13 +7,18 @@
 
 
 class IntCell {
-public:
-    explicit IntCell(int initialValue = 0);
-    ~IntCell();
-    int read() const;
-    void write(int x);
-private:
-    int* storedValue;
+ public:
+  explicit IntCell(int initialValue = 0);
+  ~IntCell();
+  IntCell(const IntCell& rhs);
+  IntCell(IntCell&& rhs);
+  IntCell& operator=(const IntCell& rhs);
+  IntCell& operator=(IntCell&& rhs);
+
+  int read() const;
+  void write(int x);
+ private:
+  int* storedValue;
 };
 
 

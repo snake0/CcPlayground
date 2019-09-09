@@ -163,8 +163,8 @@
  * Double word aligned.
  */
 struct _mct_double_word_t {
-    long lo;
-    long hi;
+  long lo;
+  long hi;
 } __attribute__ (( __aligned__( 2 * MCT_WORDSIZE )));
 
 #if (MCT_WORDSIZE == 4)
@@ -183,29 +183,29 @@ struct _mct_double_word_t {
  */
 static inline unsigned char
 double_cmp_and_swap(volatile void* dst, void* cmp, void* swap) {
-    unsigned char result;
-    volatile struct _mct_double_word_t* _dst =
-        (struct _mct_double_word_t*) dst;
-    volatile struct _mct_double_word_t* _cmp =
-        (struct _mct_double_word_t*) cmp;
-    volatile struct _mct_double_word_t* _swap =
-        (struct _mct_double_word_t*) swap;
-    __asm__ __volatile__
-    (
-    "lock ; cmpxchg8b %0;\n\t"
-    "setz %1;\n\t"
-    : /*output*/
-    "+m" ( *_dst ),
-    "=r" ( result ),
-    "+d" ( _cmp->hi ),
-    "+a" ( _cmp->lo )
-    : /*input*/
-    "c" ( _swap->hi ),
-    "b" ( _swap->lo )
-    : /*clobbered*/
-    "cc", "memory"
-    );
-    return result;
+  unsigned char result;
+  volatile struct _mct_double_word_t* _dst =
+    (struct _mct_double_word_t*) dst;
+  volatile struct _mct_double_word_t* _cmp =
+    (struct _mct_double_word_t*) cmp;
+  volatile struct _mct_double_word_t* _swap =
+    (struct _mct_double_word_t*) swap;
+  __asm__ __volatile__
+  (
+  "lock ; cmpxchg8b %0;\n\t"
+  "setz %1;\n\t"
+  : /*output*/
+  "+m" ( *_dst ),
+  "=r" ( result ),
+  "+d" ( _cmp->hi ),
+  "+a" ( _cmp->lo )
+  : /*input*/
+  "c" ( _swap->hi ),
+  "b" ( _swap->lo )
+  : /*clobbered*/
+  "cc", "memory"
+  );
+  return result;
 }
 
 #else /*x86-64*/
@@ -254,7 +254,7 @@ double_cmp_and_swap(volatile void* dst, void* cmp, void* swap) {
 /* nop == pause */
 static inline void
 cpu_relax(void) {
-    __asm__ __volatile__("rep;nop": : :"memory");
+  __asm__ __volatile__("rep;nop": : :"memory");
 }
 
 #endif
