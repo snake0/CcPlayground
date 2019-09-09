@@ -13,11 +13,11 @@ typedef struct __spinlock_t {
     volatile uint32_t locked;
 } spinlock_t;
 
-inline void spinlock_init(spinlock_t* lk) { lk->locked = 0; }
+void spinlock_init(spinlock_t* lk);
 
 void spinlock_lock(spinlock_t* lk);
 
-inline void spinlock_unlock(spinlock_t* lk) { lk->locked = 0; }
+void spinlock_unlock(spinlock_t* lk);
 
 /************* ticketlock *************/
 typedef struct __ticketlock_t {
@@ -25,11 +25,10 @@ typedef struct __ticketlock_t {
     uint32_t turn;
 } ticketlock_t;
 
-inline void ticketlock_init(ticketlock_t* lk) { memset(lk, 0, sizeof(ticketlock_t)); }
-
+void ticketlock_init(ticketlock_t* lk);
 void ticketlock_lock(ticketlock_t* lk);
 
-inline void ticketlock_unlock(ticketlock_t* lk) { ++lk->turn; }
+void ticketlock_unlock(ticketlock_t* lk);
 
 /************* mcslock *************/
 static struct _mcslock_node {
@@ -42,7 +41,7 @@ typedef struct __mcslock_t {
 } mcslock_t;
 
 
-inline void mcslock_init(mcslock_t* lk) { lk->tail = NULL; }
+void mcslock_init(mcslock_t* lk);
 
 void mcslock_lock(mcslock_t* lk, struct _mcslock_node* mynode);
 void mcslock_unlock(mcslock_t* lk, struct _mcslock_node* mynode);

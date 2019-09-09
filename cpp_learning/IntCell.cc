@@ -3,13 +3,20 @@
 //
 
 #include "IntCell.h"
+#include "include_for_cc.h"
 
-IntCell::IntCell(int initialValue) : storedValue{initialValue} {}
+IntCell::IntCell(int initialValue) {
+    storedValue = new int(initialValue);
+}
 
 int IntCell::read() const {
-    return storedValue;
+    return *storedValue;
 }
 
 void IntCell::write(int x) {
-    storedValue = x;
+    *storedValue = x;
+}
+
+IntCell::~IntCell() {
+    delete storedValue;
 }

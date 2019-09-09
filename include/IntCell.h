@@ -9,10 +9,11 @@
 class IntCell {
 public:
     explicit IntCell(int initialValue = 0);
+    ~IntCell();
     int read() const;
     void write(int x);
 private:
-    int storedValue;
+    int* storedValue;
 };
 
 

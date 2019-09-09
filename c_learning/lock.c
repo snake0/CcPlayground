@@ -10,7 +10,7 @@
 #include "barrier.h"
 #include "sync_prim.h"
 
-static inline uint32_t test_and_set(volatile uint32_t* addr, uint32_t newval) {
+static uint32_t test_and_set(volatile uint32_t* addr, uint32_t newval) {
     uint32_t result;
 
     // The + in "+m" denotes a read-modify-write operand.
@@ -21,7 +21,7 @@ static inline uint32_t test_and_set(volatile uint32_t* addr, uint32_t newval) {
     return result;
 }
 
-static inline uint32_t compare_and_swap(volatile uint32_t* addr, uint32_t oldval, uint32_t newval) {
+static uint32_t compare_and_swap(volatile uint32_t* addr, uint32_t oldval, uint32_t newval) {
     unsigned char ret;
 
     // Note that sete sets a ’byte’ not the word
@@ -42,20 +42,30 @@ uint32_t fetch_and_add(volatile uint32_t* addr) {
 
 
 /************ spinlock *************/
+
+void spinlock_init(spinlock_t* lk) { lk->locked = 0; }
 void spinlock_lock(spinlock_t* lk) {
     while (test_and_set(&lk->locked, 1) != 0)
         asm volatile("pause");
 }
 
+void spinlock_unlock(spinlock_t* lk) { lk->locked = 0; }
+
+
 /************* ticketlock *************/
+void ticketlock_init(ticketlock_t* lk) { memset(lk, 0, sizeof(ticketlock_t)); }
 
 void ticketlock_lock(ticketlock_t* lk) {
     int myturn = fetch_and_add(&lk->ticket);
     while (myturn != lk->turn);
 }
 
+void ticketlock_unlock(ticketlock_t* lk) { ++lk->turn; }
+
 
 /************* mcslock *************/
+void mcslock_init(mcslock_t* lk) { lk->tail = NULL; }
+
 void mcslock_lock(mcslock_t* lock, struct _mcslock_node* mynode) {
     struct _mcslock_node* pre;
     mynode->next = NULL;
@@ -77,7 +87,7 @@ void mcslock_lock(mcslock_t* lock, struct _mcslock_node* mynode) {
     }
 }
 
-inline void mcslock_unlock(mcslock_t* lock, struct _mcslock_node* mynode) {
+void mcslock_unlock(mcslock_t* lock, struct _mcslock_node* mynode) {
     if (mynode->next == NULL) {
         /*
          * I'm the last one temporally, now race with other new requester:

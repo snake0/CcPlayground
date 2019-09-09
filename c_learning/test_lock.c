@@ -31,7 +31,7 @@ int main() {
     pthread_t pids[THREADS];
     for (int i = 0; i < THREADS; ++i)
         pthread_create(&pids[i], NULL, thread, (void*) &common);
-//    for (int i = 0; i < THREADS; ++i)
-//        pthread_join(pids[i], NULL);
+    for (int i = 0; i < THREADS; ++i)
+        pthread_join(pids[i], NULL);
     printf("done\n");
 }
