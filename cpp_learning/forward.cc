@@ -4,10 +4,10 @@
 #include <memory>
 #include <utility>
 
-struct A {
-    A(int&& n) { std::cout << "rvalue overload, n=" << n << "\n"; }
+struct intcell {
+    intcell(int&& n) { std::cout << "rvalue overload, n=" << n << "\n"; }
 
-    A(int& n) { std::cout << "lvalue overload, n=" << n << "\n"; }
+    intcell(int& n) { std::cout << "lvalue overload, n=" << n << "\n"; }
 };
 
 class B {
@@ -20,7 +20,7 @@ public:
     }
 
 private:
-    A a1_, a2_, a3_;
+    intcell a1_, a2_, a3_;
 };
 
 template<class T, class U>
@@ -34,9 +34,9 @@ std::unique_ptr<T> make_unique2(U&& ... u) {
 }
 
 int main() {
-    auto p1 = make_unique1<A>(2); // rvalue
+    auto p1 = make_unique1<intcell>(2); // rvalue
     int i = 1;
-    auto p2 = make_unique1<A>(i); // lvalue
+    auto p2 = make_unique1<intcell>(i); // lvalue
 
     std::cout << "B\n";
     auto t = make_unique2<B>(2, i, 3);

@@ -4,19 +4,19 @@ struct V {
     virtual void f() {};  // must be polymorphic to use runtime-checked dynamic_cast
 };
 
-struct A : virtual V {
+struct Int_Cell : virtual V {
 };
 
 struct B : virtual V {
-    B(V* v, A* a) {
+    B(V* v, Int_Cell* a) {
         // casts during construction (see the call in the constructor of D below)
         dynamic_cast<B*>(v); // well-defined: v of type V*, V base of B, results in B*
         dynamic_cast<B*>(a); // undefined behavior: a has type A*, A not a base of B
     }
 };
 
-struct D : A, B {
-    D() : B(static_cast<A*>(this), this) {}
+struct D : Int_Cell, B {
+    D() : B(static_cast<Int_Cell*>(this), this) {}
 };
 
 struct Base {
@@ -29,7 +29,7 @@ struct Derived : Base {
 
 int main() {
     D d; // the most derived object
-    A& a = d; // upcast, dynamic_cast may be used, but unnecessary
+    Int_Cell& a = d; // upcast, dynamic_cast may be used, but unnecessary
     D& new_d = dynamic_cast<D&>(a); // downcast
     B& new_b = dynamic_cast<B&>(a); // sidecast
 

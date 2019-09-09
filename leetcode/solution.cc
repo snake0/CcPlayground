@@ -327,8 +327,16 @@ public:
             l1->next = mergeTwoLists(l1->next, l2);
         return l1;
     }
+
+    // 33
+    int search(vector<int>& nums, int target) {
+
+    }
 };
 
 int main() {
+    Solution s;
+    vector<int> v = {1, 2, 3, 4};
+    s.search(v, 2);
     cout << "hello world";
 }
