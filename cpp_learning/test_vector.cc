@@ -5,6 +5,7 @@
 #include "Vector.h"
 #include <iostream>
 #include <vector>
+#include "include_for_cc.h"
 
 using namespace std;
 
@@ -28,5 +29,7 @@ int main() {
 //  s.swap(v);
 //  printVector(v);
 //  printVector(s);
-
+queue<int>q;
+deque<int>dq;
+vector<int>v;
 }
