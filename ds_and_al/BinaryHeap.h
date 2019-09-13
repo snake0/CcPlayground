@@ -17,6 +17,7 @@ class BinaryHeap {
 //  BinaryHeap();
   explicit BinaryHeap(int capacity = 100);
   explicit BinaryHeap(const vector<Comparable> &items);
+  explicit BinaryHeap(vector<Comparable> &&items);
 
   bool isEmpty() const;
   bool isHeap() const;
@@ -36,7 +37,7 @@ class BinaryHeap {
   Comparator lessThan;
 
   void buildHeap();
-  void percDown(int hole);
+  void percolateDown(int hole);
 };
 
 template<class Comparable, class Comparator>
@@ -55,6 +56,18 @@ BinaryHeap(const vector<Comparable> &items)
 
   for (int i = 0; i < size; ++i)
     array[i + 1] = items[i];
+  buildHeap();
+}
+
+template<class Comparable, class Comparator>
+BinaryHeap<Comparable, Comparator>::
+BinaryHeap(vector<Comparable> &&items)
+  :array(items.size() + 10), currentSize{static_cast<int>(items.size())} {
+  lessThan = Comparator();
+  int size = items.size();
+
+  for (int i = 0; i < size; ++i)
+    array[i + 1] = std::move(items[i]);
   buildHeap();
 }
 
@@ -103,7 +116,7 @@ void BinaryHeap<Comparable, Comparator>::pop() {
     throw UnderflowException{};
 
   array[1] = std::move(array[currentSize--]);
-  percDown(1);
+  percolateDown(1);
 }
 
 template<class Comparable, class Comparator>
@@ -113,7 +126,7 @@ void BinaryHeap<Comparable, Comparator>::pop(Comparable &t) {
 
   t = std::move(array[1]);
   array[1] = std::move(array[currentSize--]);
-  percDown(1);
+  percolateDown(1);
 }
 
 template<class Comparable, class Comparator>
@@ -123,20 +136,23 @@ void BinaryHeap<Comparable, Comparator>::makeEmpty() {
 
 template<class Comparable, class Comparator>
 void BinaryHeap<Comparable, Comparator>::buildHeap() {
-
+  for (int i = currentSize >> 1; i > 0; --i)
+    percolateDown(i);
 }
 
 template<class Comparable, class Comparator>
-void BinaryHeap<Comparable, Comparator>::percDown(int hole) {
+void BinaryHeap<Comparable, Comparator>::percolateDown(int hole) {
   int child;
   Comparable t = std::move(array[hole]);
 
   for (; LCHILD(hole) <= currentSize; hole = child) {
     child = LCHILD(hole);
+
     if (child != currentSize && array[child + 1] < array[child])
       ++child;
+
     if (array[child] < t)
-      array[hole] = std::move(child);
+      array[hole] = std::move(array[child]);
     else break;
   }
   array[hole] = std::move(t);
@@ -159,17 +175,11 @@ bool BinaryHeap<Comparable, Comparator>::isHeap() const {
 
 template<class Comparable, class Comparator>
 void BinaryHeap<Comparable, Comparator>::print(ostream &out) {
-  if (currentSize == 0) {
-    out << "[ ]\n";
-    return;
-  }
-  out << "[ ";
-  for (int i = 1; i < currentSize; ++i)
-    out << array[i] << ", ";
-  out << array[currentSize];
-  out << " ]\n";
+  int level = 0;
+  while ((1 << level) < currentSize)
+    ++level;
+  out<<level;
 }
-
 
 
 #endif //LEETCODE_BINARYHEAP_H
