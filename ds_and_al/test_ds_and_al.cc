@@ -7,7 +7,9 @@
 #include "Vector.h"
 #include "BinaryHeap.h"
 #include "BinarySearchTree.h"
+#include "HashTable.h"
 
+using namespace chrono;
 typedef vector<int> ar;
 
 template<class Comparable, class Comparator=less<Comparable>>
@@ -58,8 +60,16 @@ void auto_test() {
     {quickSort,     "quickSort"},
   };
 
-  for (auto &d:f)
-    testSort(d.first, 100, 10, d.second);
+  for (auto &d:f) {
+    auto start = system_clock::now();
+    testSort(d.first, 1000, 100, d.second);
+    auto end = system_clock::now();
+    auto duration = duration_cast
+      <microseconds>(end - start);
+    cout << "花费了"
+         << double(duration.count()) * microseconds::period::num / microseconds::period::den
+         << "秒" << endl;
+  }
 }
 
 bool lessThanBinding(binding &l, binding &r) {
@@ -67,7 +77,7 @@ bool lessThanBinding(binding &l, binding &r) {
 }
 
 int main() {
-  auto_test<int>();
+//  auto_test<int>();
 //  vector<binding> v = {{2, 122},
 //                       {0, 2221},
 //                       {1, 3334}};
