@@ -28,6 +28,4 @@ add_executable(c_volatile c_learning/volatile.c)
 add_executable(noexcept cpp_learning/noexcept.cc)
 add_executable(threads c_learning/threads.c)
 
-add_executable(test_dsal ds_and_al/BinaryHeap.cc
-        ds_and_al/BinarySearchTree.cc
-        ds_and_al/test_ds_and_al.cc)
+add_executable(test_dsal ds_and_al/test_ds_and_al.cc)

@@ -157,6 +157,11 @@ struct IteratorMisMatchException : public exception {
     return "Iterator mismatch bound exception";
   }
 };
+struct UnderflowException : public exception {
+  const char *what() const noexcept {
+    return "Underflow exception";
+  }
+};
 
 #define L newListNode
 #define T newTreeNode

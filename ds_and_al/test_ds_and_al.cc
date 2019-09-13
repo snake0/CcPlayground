@@ -68,9 +68,25 @@ bool lessThanBinding(binding &l, binding &r) {
 
 int main() {
 //  auto_test<int>();
-  vector<binding> v = {{2, 122},
-                       {0, 2221},
-                       {1, 3334}};
-  cout << (v.end() > v.end());
-  bubbleSort(v, lessThanBinding);
+//  vector<binding> v = {{2, 122},
+//                       {0, 2221},
+//                       {1, 3334}};
+//  cout << (v.end() > v.end());
+//  bubbleSort(v, lessThanBinding);
+  BinaryHeap<int>j;
+  int y;
+  j.push(2);
+  j.push(1);
+  j.push(4);
+  j.push(3);
+  cout << boolalpha<< j.isHeap()<<endl;
+  j.print();
+
+  j.pop(y);
+  j.pop(y);
+  j.pop(y);
+  j.pop(y);
+  j.pop(y);
+  cout << boolalpha<< j.isHeap()<<endl;
+
 }
