@@ -334,6 +334,7 @@ class Solution {
   }
 };
 
+void f(int k = 0);
 int main() {
   Solution s;
   vector<int> v = {1, 2, 3, 4};

@@ -5,7 +5,7 @@
 #ifndef LEETCODE_VECTOR_H
 #define LEETCODE_VECTOR_H
 
-#include <algorithm>
+#include "include_for_cc.h"
 
 template<typename Object>
 class Vector {
@@ -129,6 +129,19 @@ class Vector {
   }
 
   static const int SPARE_CAPACITY = 16;
+
+  void print(ostream &out = cout) {
+    if (theSize == 0) {
+      out << "[ ]\n";
+      return;
+    }
+    out << "[ ";
+    for (int i = 0; i < theSize - 1; ++i)
+      out << objects[i] << ", ";
+    out << objects[theSize - 1];
+    out << " ]\n";
+  }
+
  private:
   int theSize;
   int theCapacity;

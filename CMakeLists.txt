@@ -4,7 +4,7 @@ project(leetcode)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(include)
-add_executable(const_cast cpp_learning/const_cast.cc cpp_learning/test_sort.cc)
+add_executable(const_cast cpp_learning/const_cast.cc ds_and_al/test_ds_and_al.cc)
 add_executable(constexpr cpp_learning/constexpr.cc)
 add_executable(dynamic_cast cpp_learning/dynamic_cast.cc)
 add_executable(forward cpp_learning/forward.cc)
@@ -25,8 +25,9 @@ add_executable(test_memcpy c_learning/test_memcpy.c)
 add_executable(test_lock c_learning/lock.c c_learning/test_lock.c)
 add_executable(cpp_volatile cpp_learning/volatile.cpp)
 add_executable(c_volatile c_learning/volatile.c)
-add_executable(test_list cpp_learning/test_list.cc)
-add_executable(test_vector cpp_learning/test_vector.cc)
 add_executable(noexcept cpp_learning/noexcept.cc)
 add_executable(threads c_learning/threads.c)
-add_executable(test_sort cpp_learning/test_sort.cc)
+
+add_executable(test_dsal ds_and_al/BinaryHeap.cc
+        ds_and_al/BinarySearchTree.cc
+        ds_and_al/test_ds_and_al.cc)

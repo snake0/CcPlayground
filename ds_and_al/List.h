@@ -27,9 +27,13 @@ class List {
    public:
     const_iterator() : current{nullptr} {}
 
+    const_iterator(Node *p) : current{p} {}
+
     const Object &operator*() const { return retrieve(); }
 
     const_iterator &operator++() {
+      if (current == theList->tail)
+        throw IteratorOutOfBoundException{};
       current = current->next;
       return *this;
     }
@@ -40,7 +44,32 @@ class List {
       return old;
     }
 
-    bool operator==(const const_iterator &rhs) { return current == rhs.current; }
+    const_iterator &operator--() {
+      if (current == theList->head->next)
+        throw IteratorOutOfBoundException{};
+      current = current->prev;
+      return *this;
+    }
+
+    const_iterator operator--(int) {
+      const_iterator old = *this;
+      --(*this);
+      return old;
+    }
+
+    const_iterator &operator+(int step) {
+      while (step--)
+        ++(*this);
+      return *this;
+    }
+
+    const_iterator &operator-(int step) {
+      while (step--)
+        --(*this);
+      return *this;
+    }
+
+    bool operator==(const const_iterator &rhs) { return theList == rhs.theList && current == rhs.current; }
 
     bool operator!=(const const_iterator &rhs) { return !(*this == rhs); }
 
@@ -70,6 +99,8 @@ class List {
     const Object &operator*() const { return const_iterator::operator*(); }
 
     iterator &operator++() {
+      if (this->current == this->theList->tail)
+        throw IteratorOutOfBoundException{};
       this->current = this->current->next;
       return *this;
     }
@@ -78,6 +109,31 @@ class List {
       iterator old = *this;
       ++(*this);
       return old;
+    }
+
+    iterator &operator--() {
+      if (this->current == this->theList->head->next)
+        throw IteratorOutOfBoundException{};
+      this->current = this->current->prev;
+      return *this;
+    }
+
+    iterator operator--(int) {
+      iterator old = *this;
+      --(*this);
+      return old;
+    }
+
+    iterator operator+(int step) {
+      while (step--)
+        ++(*this);
+      return *this;
+    }
+
+    iterator operator-(int step) {
+      while (step--)
+        --(*this);
+      return *this;
     }
 
    protected:
@@ -124,13 +180,29 @@ class List {
     return *this;
   }
 
-  iterator begin() { return {head->next}; }
+  iterator begin() {
+    iterator p{head->next};
+    p.theList = this;
+    return p;
+  }
 
-  const_iterator begin() const { return {head->next}; }
+  const_iterator begin() const {
+    iterator p{head->next};
+    p.theList = this;
+    return p;
+  }
 
-  iterator end() { return {tail}; }
+  iterator end() {
+    iterator p{tail};
+    p.theList = this;
+    return p;
+  }
 
-  const_iterator end() const { return {tail}; }
+  const_iterator end() const {
+    iterator p{tail};
+    p->theList = this;
+    return p;
+  }
 
   int size() const { return theSize; }
 
@@ -178,8 +250,8 @@ class List {
     if (itr.theList != this)
       throw IteratorMisMatchException{};
 
-    Node *p = itr.current;
     ++theSize;
+    Node *p = itr.current;
     return {
       p->prev = p->prev->next = new Node{std::move(x), p->prev, p}
     };
@@ -201,6 +273,15 @@ class List {
       itr = erase(itr);
 
     return to;
+  }
+
+  void print(ostream &out = cout) {
+    Node *iter = head->next;
+    while (iter != tail) {
+      out << iter->data << " -> ";
+      iter = iter->next;
+    }
+    out << "ph\n";
   }
 
  private:
