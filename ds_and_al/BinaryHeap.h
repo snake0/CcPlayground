@@ -178,7 +178,7 @@ void BinaryHeap<Comparable, Comparator>::print(ostream &out) {
   int level = 0;
   while ((1 << level) < currentSize)
     ++level;
-  out<<level;
+
 }
 
 

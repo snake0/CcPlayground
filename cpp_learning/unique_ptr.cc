@@ -44,7 +44,7 @@ int main() {
     v.push_back(std::make_unique<D>());
     v.push_back(std::move(p));
     v.emplace_back(new D);
-    for (auto& p: v) p->bar(); // virtual dispatch
+    for (auto &q: v) q->bar(); // virtual dispatch
   } // ~D called 3 times
 
   std::cout << "Custom deleter demo\n";
