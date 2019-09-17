@@ -26,7 +26,7 @@ add_executable(leetcode_in_cpp leetcode/solution.cc)
 add_executable(cpp_volatile cpp_learning/volatile.cpp)
 
 #c
-add_executable(leetcode_in_c c_learning/lock.c leetcode/solution.c)
+add_executable(leetcode_in_c leetcode/solution.c)
 add_executable(test_memcpy c_learning/test_memcpy.c)
 add_executable(test_lock c_learning/lock.c c_learning/test_lock.c)
 add_executable(c_volatile c_learning/volatile.c)

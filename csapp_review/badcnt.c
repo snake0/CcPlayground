@@ -3,12 +3,14 @@
  */
 /* $begin badcnt */
 /* WARNING: This code is buggy! */
-#include "csapp.h"
+#include "csapp.hxx"
 
 void *thread(void *vargp);  /* Thread routine prototype */
 
 /* Global shared variable */
+atomic_long atomicLong = 0;
 volatile long cnt = 0; /* Counter */
+sem_t *mutex; /* Semaphore */
 
 int main(int argc, char **argv) {
   long niters;
@@ -21,6 +23,9 @@ int main(int argc, char **argv) {
   }
   niters = atoi(argv[1]);
 
+  /* on OS X */
+  mutex = sem_open("/mysem", O_CREAT, S_IRUSR | S_IWUSR, 1);
+
   /* Create threads and wait for them to finish */
   Pthread_create(&tid1, NULL, thread, &niters);
   Pthread_create(&tid2, NULL, thread, &niters);
@@ -28,10 +33,13 @@ int main(int argc, char **argv) {
   Pthread_join(tid2, NULL);
 
   /* Check result */
-  if (cnt != (2 * niters))
+  if (atomicLong != (2 * niters))
     printf("BOOM! cnt=%ld\n", cnt);
   else
-    printf("OK cnt=%ld\n", cnt);
+    printf("OK cnt=%ld\n", atomicLong);
+
+  sem_close(mutex);
+  sem_unlink("/mysem");
   exit(0);
 }
 
@@ -39,9 +47,11 @@ int main(int argc, char **argv) {
 void *thread(void *vargp) {
   long i, niters = *((long *) vargp);
 
-  for (i = 0; i < niters; i++) //line:conc:badcnt:beginloop
-    cnt++;                   //line:conc:badcnt:endloop
-
+  for (i = 0; i < niters; i++) {//line:conc:badcnt:beginloop
+//    P(mutex);
+    ++atomicLong;                   //line:conc:badcnt:endloop
+//    V(mutex);
+  }
   return NULL;
 }
 /* $end badcnt */

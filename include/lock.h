@@ -5,7 +5,7 @@
 #define LOCK_H
 
 
-#include "csapp.h"
+#include "csapp.hxx"
 #include "sync_prim.h"
 
 /************ spinlock *************/

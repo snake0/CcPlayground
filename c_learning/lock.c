@@ -2,10 +2,6 @@
 // Created by SNAKE on 2019-08-28.
 //
 
-//
-// Created by SNAKE on 2019-08-27.
-//
-
 #include "lock.h"
 #include "barrier.h"
 #include "sync_prim.h"

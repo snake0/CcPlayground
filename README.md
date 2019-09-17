@@ -7,6 +7,6 @@ My solution to leetcode and learning someting else
 
 `ds_and_al/`: data structures and algorithms
 
-`leetcode/`: solution to leetcode problems
+`leetcode/`: solution to leetcode problems, search by problem IDs to see solution
 
-Search by problem IDs to see solution
+`csapp_review/`: csapp code
