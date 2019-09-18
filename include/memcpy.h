@@ -5,7 +5,7 @@
 #ifndef LEETCODE_MEMCPY_H
 #define LEETCODE_MEMCPY_H
 
-#include "csapp.hxx"
+#include "include_for_c.h"
 
 void prstr(const char* str, size_t n) {
   while (n--)

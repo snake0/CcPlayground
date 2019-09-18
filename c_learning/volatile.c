@@ -23,4 +23,5 @@ int main(void) {
   printf("Modified a volatile variable 100m times. "
          "Time used: %.2f seconds\n",
          (double) (clock() - t) / CLOCKS_PER_SEC);
+
 }
