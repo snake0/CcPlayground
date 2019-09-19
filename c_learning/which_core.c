@@ -7,7 +7,7 @@
 atomic_int cnt = 0;
 #define THREADS 4
 
-clock_t b, e;
+clock_t barrier, e;
 
 pthread_t threads[THREADS];
 
@@ -18,7 +18,7 @@ void *thread(void *arg) {
 }
 
 int main() {
-  b = clock();
+    barrier = clock();
   for (int i = 0; i < THREADS; ++i) {
     pthread_create(&threads[i], NULL, thread, NULL);
   }
@@ -26,6 +26,6 @@ int main() {
     pthread_join(threads[i], NULL);
   }
   e = clock();
-  double time = (double) (e - b) / CLOCKS_PER_SEC;
+  double time = (double) (e - barrier) / CLOCKS_PER_SEC;
   printf("%f", time);
 }

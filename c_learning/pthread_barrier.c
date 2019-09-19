@@ -11,13 +11,14 @@
 long nums[NUMBER];
 long snums[NUMBER];
 
-pthread_barrier_t b;
+pthread_barrier_t barrier;
 
 /* 这里引用了一个外部函数  来自bsd库的堆排序函数 SOLARIS系统内置函数名为 qsort*/
 #ifdef SOLARIS
 #define heapsort qsort
 #else
-extern int heapsort(void *, size_t, size_t, int (*)(const void *, const void *));
+//extern int qsort(void *__base, size_t __nmemb, size_t __size,
+//                 __compar_fn_t __compar) __nonnull ((1, 4));
 #endif   //SOLARIS
 
 /**
@@ -41,8 +42,8 @@ int complong(const void *arg1, const void *arg2) {
  */
 void *thr_fn(void *arg) {
   long idx = (long) arg;
-  heapsort(&nums[idx], TNUM, sizeof(long), complong);
-  pthread_barrier_wait(&b);
+  qsort(&nums[idx], TNUM, sizeof(long), complong);
+  pthread_barrier_wait(&barrier);
 
   /**
    * 退出或者做其他更多工作.....
@@ -60,7 +61,7 @@ void merge() {
   for (i = 0; sidx < NUMBER; i++)
     idx[i] = i * TNUM;
   for (sidx = 0; sidx < NUMBER; sidx++) {
-    num = LONG_MAX;
+    num = INT64_MAX;
     for (i = 0; i < NTHR; i++) {
       if ((idx[i] < (i + 1) * TNUM) && (nums[idx[i]] < num)) {
         num = nums[idx[i]];
@@ -93,14 +94,14 @@ int main(int argc, char **argv) {
    */
 
   gettimeofday(&start, NULL);
-  pthread_barrier_init(&b, NULL, NTHR + 1);   /* 初始化屏障 */
+  pthread_barrier_init(&barrier, NULL, NTHR + 1);   /* 初始化屏障 */
   for (i = 0; i < NTHR; i++) {
     err = pthread_create(&tid, NULL, thr_fn, (void *) (i * TNUM));
     if (err != 0)
-      err_exit(err, "Can't create thread");
+      exit(err);
   }
 
-  pthread_barrier_wait(&b);   /* 获取屏障锁 */
+  pthread_barrier_wait(&barrier);   /* 获取屏障锁 */
   merge();   /* 合并 */
   gettimeofday(&end, NULL);
 

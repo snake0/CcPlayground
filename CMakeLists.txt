@@ -31,6 +31,7 @@ add_executable(test_memcpy c_learning/test_memcpy.c)
 add_executable(test_lock c_learning/lock.c c_learning/test_lock.c)
 add_executable(c_volatile c_learning/volatile.c)
 add_executable(barrier c_learning/pthread_barrier.c)
+target_link_libraries(barrier pthread)
 add_executable(core c_learning/which_core.c)
 
 #csapp
