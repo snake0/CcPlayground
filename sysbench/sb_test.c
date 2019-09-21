@@ -6,7 +6,6 @@
 #include "sb_cpu.h"
 
 sb_list_t tests;
-sb_test_t *current_test;
 
 void sb_test_init(void) {
   register_cpu();
@@ -14,7 +13,7 @@ void sb_test_init(void) {
 
 sb_test_t *sb_test_get_entry(const char *name) {
   sb_list_for_each(tests) {
-    sb_test_t *test = sb_list_entry(pos, sb_test_t);
+    sb_test_t *test = sb_list_entry(sb_test_t);
     if (!strcmp(test->sname, name)) {
       return test;
     }

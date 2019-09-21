@@ -9,7 +9,7 @@
 #include "sysbench.h"
 
 /* CPU test arguments */
-static sb_option_t cpu_args[] =
+static sb_option_t cpu_options[] =
   {
     SB_OPT("cpu-max-prime", "upper limit for primes generator", "10000", INT),
 
@@ -31,10 +31,12 @@ sb_test_t cpu_test =
       .report_cumulative = cpu_report_cumulative,
       .done = cpu_done
     },
-    .args = cpu_args
+
   };
 
 void register_cpu(void) {
+  for (int i = 0; cpu_options[i].type != SB_ARG_TYPE_NULL; ++i)
+    sb_list_add(cpu_test.options, cpu_options[i]);
   sb_list_add(tests, cpu_test);
 }
 

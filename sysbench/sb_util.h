@@ -6,6 +6,7 @@ enum err {
   SB_OPTION_SYNTAX,
   SB_OPTION_UNKNOWN,
   SB_TEST_UNKNOWN,
+  SB_OPTION_TYPE,
   SB_MAX
 };
 
@@ -13,6 +14,7 @@ static char *errmsg[] = {
   [SB_OPTION_SYNTAX]="Invalid option syntax",
   [SB_OPTION_UNKNOWN]="Unknown option",
   [SB_TEST_UNKNOWN]="Unknown test",
+  [SB_OPTION_TYPE]="Option type error",
 };
 
 #define ASSERT(f) do { \
