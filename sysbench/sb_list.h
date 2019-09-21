@@ -32,7 +32,7 @@ typedef struct _list {
     sb_list_item_t *pos; \
     for ((pos) = (list).head; (pos); (pos) = (pos)->next)
 
-#define sb_list_entry(item, type) \
-    ((type *)(void *)(((char *)(item) - offsetof(type, listitem))))
+#define sb_list_entry(pos, type) \
+    ((type *)(void *)(((char *)(pos) - offsetof(type, listitem))))
 
 #endif //SB_LIST_H
