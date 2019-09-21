@@ -7,12 +7,8 @@
 
 #include "sb_option.h"
 #include "sb_test.h"
+#include "sb_util.h"
 #include <stdio.h>
 
-extern sb_list_t tests;
-extern sb_list_t options;
-
-extern sb_test_t* current_test;
-extern sb_option_t default_options[];
 
 #endif //SYSBENCH_SYSBENCH_H

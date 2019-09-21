@@ -90,7 +90,8 @@ typedef struct sb_test {
   sb_list_item_t listitem;
 } sb_test_t;
 
-
+extern sb_list_t tests;
+extern sb_test_t *current_test;
 
 void sb_test_init(void);
 

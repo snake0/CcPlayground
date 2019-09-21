@@ -5,6 +5,9 @@
 #include "sb_test.h"
 #include "sb_cpu.h"
 
+sb_list_t tests;
+sb_test_t *current_test;
+
 void sb_test_init(void) {
   register_cpu();
 }
