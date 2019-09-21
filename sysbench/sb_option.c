@@ -42,16 +42,14 @@ sb_option_t *sb_option_get_entry(const char *name) {
 
 char *sb_option_get_value(const char *name) {
   sb_option_t *opt = sb_option_get_entry(name);
-  if (!opt)
-    return NULL;
-  return opt->value;
+  return !opt ? NULL : opt->value;
 }
 
 void sb_option_set_value(const char *name, char *value) {
   sb_option_t *opt = sb_option_get_entry(name);
-  if (!opt)
-    return;
-  opt->value = value;
+  if (opt != NULL) {
+    opt->value = value;
+  }
 }
 
 void sb_option_init(void) {
