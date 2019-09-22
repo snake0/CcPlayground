@@ -1,4 +1,4 @@
-# leetcode
+# CcPlayground
 My solution to leetcode and learning someting else
 
 `c_learning/`: learn some `C` programming

@@ -94,6 +94,5 @@ extern sb_list_t tests;
 
 void sb_test_init(void);
 
-sb_test_t *sb_test_get_entry(const char *name);
 
 #endif //SYSBENCH_SB_TEST_H

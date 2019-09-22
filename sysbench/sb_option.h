@@ -34,11 +34,8 @@ typedef struct {
 
 #define SB_OPT_END { .type = SB_ARG_TYPE_NULL }
 
-extern sb_list_t general_options;
-extern sb_option_t default_general_options[];
 
 int sb_option_set_value(const char *name, char *value, sb_list_t opts);
-static sb_option_t *sb_option_get_entry(const char *name, sb_list_t opts);
 void sb_option_init(void);
 int sb_option_parse(int argc, char **argv);
 
