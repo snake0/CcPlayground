@@ -28,6 +28,8 @@ typedef struct _list {
     } \
 } while(0)
 
+/* the following two macros shuold be used together */
+
 #define sb_list_for_each(list)  \
     sb_list_item_t *pos; \
     for ((pos) = (list).head; (pos); (pos) = (pos)->next)

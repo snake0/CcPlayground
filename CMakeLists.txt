@@ -35,6 +35,8 @@ target_link_libraries(barrier pthread)
 add_executable(core c_learning/which_core.c)
 add_executable(dup c_learning/dup.c)
 
+add_executable(fork c_learning/fork.c)
+
 add_executable(sysbench sysbench/sysbench.c sysbench/sb_option.c)
 
 #csapp

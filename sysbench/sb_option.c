@@ -65,6 +65,7 @@ static int parse_test_option(int i, int argc, char **argv) {
       sb_globals.test = test;
       sb_globals.testname = test->sname;
 
+      ++i;
       for (; i < argc; ++i) {
         if (!strncmp("--", argv[i], 2)) {
           if ((r = parse_option(argv[i], test->options)))
@@ -120,7 +121,7 @@ void sb_option_print(void) {
     }
   }
   {
-    printf("%s test options: \n", sb_globals.testname);
+    printf("test %s : command %s\n", sb_globals.testname, sb_globals.cmdname);
     sb_list_for_each(sb_globals.test->options) {
       sb_option_t *opt = sb_list_entry(sb_option_t);
       printf("  %-20s: %4s\n", opt->name, opt->value);
