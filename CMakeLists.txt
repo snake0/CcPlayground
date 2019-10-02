@@ -36,7 +36,7 @@ add_executable(core c_learning/which_core.c)
 add_executable(dup c_learning/dup.c)
 add_executable(fork csapp_review/fork.c)
 add_executable(waitpid csapp_review/waitpid.c)
-add_executable(sysbench sysbench/sysbench.c sysbench/sb_option.c)
+add_executable(getopt c_learning/getopt.c)
 
 #csapp
 add_executable(badcnt csapp_review/badcnt.c)
