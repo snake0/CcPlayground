@@ -27,9 +27,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-
-#define __USE_GNU
-
+#include <inttypes.h>
 #include <sched.h>
 #include <stdatomic.h>
 #include <stdint.h>
