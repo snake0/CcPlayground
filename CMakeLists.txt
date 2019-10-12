@@ -28,7 +28,7 @@ add_executable(thread_local cpp_learning/thread_local.cc)
 #c
 add_executable(leetcode_in_c leetcode/solution.c)
 add_executable(test_memcpy c_learning/test_memcpy.c)
-add_executable(test_lock c_learning/lock.c c_learning/test_lock.c c_learning/dup.c)
+add_executable(test_lock c_learning/lock.c c_learning/test_lock.c c_learning/dup.c c_learning/memory_barrier.c)
 add_executable(c_volatile c_learning/volatile.c)
 add_executable(barrier c_learning/pthread_barrier.c c_learning/lock.c)
 target_link_libraries(barrier pthread)
@@ -38,6 +38,8 @@ add_executable(fork csapp_review/fork.c)
 add_executable(waitpid csapp_review/waitpid.c)
 add_executable(getopt c_learning/getopt.c)
 add_executable(events c_learning/events.c c_learning/lock.c)
+add_executable(mem_ba c_learning/memory_barrier.c)
+add_executable(rand c_learning/rand.c)
 
 #csapp
 add_executable(badcnt csapp_review/badcnt.c)
