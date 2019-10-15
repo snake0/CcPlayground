@@ -32,5 +32,6 @@
 #include <stdatomic.h>
 #include <stdint.h>
 #include <assert.h>
+#include <limits.h>
 
 #endif //LEETCODE_INCLUDE_FOR_C_H
